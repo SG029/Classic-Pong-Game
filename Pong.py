@@ -935,7 +935,7 @@ def input_screen():
         # DRAWING BUTTONS
         login_command = Button__(200, 150, 200, 65,light_pink,med_pink,dark_pink,mouse,click,'LOGIN',41).button_blit()
         sign_up_command = Button__(600, 150, 200, 65,light_cyan,med_cyan,dark_cyan,mouse,click,'SIGN UP',41).button_blit()
-        next_command = Button__(700, 580, 115, 55,light_peach,med_peach,dark_peach,mouse,click,'NEXT',32).button_blit()
+        next_command = Button__(700, 700, 115, 55,light_peach,med_peach,dark_peach,mouse,click,'NEXT',32).button_blit()
 
         if login_command == True and stop-start>1:login = True;signup = False;OK_clicked_once = False ; start = stop
         elif sign_up_command == True and stop-start>1:signup = True;login = False;OK_clicked_once = False ; start = stop
@@ -956,7 +956,7 @@ def input_screen():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 cursor_placement = None
 
-                if mouse_over(200, 150, 200, 65, mouse) or mouse_over(600, 150, 200, 65, mouse) or mouse_over(700, 580, 100, 65, mouse):click = True
+                if mouse_over(200, 150, 200, 65, mouse) or mouse_over(600, 150, 200, 65, mouse) or mouse_over(700, 700, 100, 65, mouse):click = True
 
                 elif mouse_over(925, 725, 50, 50, mouse): # MUTING OR RESUMING MUSIC
                     click = True
