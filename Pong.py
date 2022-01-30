@@ -30,6 +30,7 @@ import random
 from pygame import mixer
 import sqlite3
 import time
+import sys
 
 # INITIALISING PYGAME MODULE BECAUSE ITS A CINVINIENT WAY TO GET EVERYTHING STARTED
 pygame.init()
@@ -365,7 +366,7 @@ def mul_name(speed):
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             # WHEN THE MOUSEBUTON IS PRESSED
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -470,9 +471,7 @@ def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run_w_l = False
-                exit()
+            if event.type == pygame.QUIT:sys.exit()
                 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 
@@ -507,7 +506,7 @@ def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
             show_txt('Do you want to quit?', 230, 230, 230, 37, 330, 320)
             quit_yes = Button__(370,410,100,50,light_pink,med_pink,dark_pink,mouse,click,'YES',40).button_blit()
             quit_no = Button__(520,410,100,50,light_cyan,med_cyan,dark_cyan,mouse,click,'NO',40).button_blit()
-            if quit_yes == True:exit()
+            if quit_yes == True:sys.exit()
             elif quit_no == True:quit_confirmation = False
             click = False
 
@@ -588,7 +587,7 @@ def pause(username):
         
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_over(925, 725, 50, 50, mouse):
@@ -633,7 +632,7 @@ def pause(username):
                             value = (high_score_ai_free,username)
                             mycursor.execute(query,value);mydb.commit()
                 except:pass
-                exit()
+                sys.exit()
             elif quit_no == True:quit_confirmation = False;click = True
             click = False
 
@@ -729,7 +728,7 @@ def menu_play_1(user_name):
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -951,7 +950,7 @@ def input_screen():
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 cursor_placement = None
@@ -1105,9 +1104,7 @@ def about():
             icon_rot(angle_x)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run_about = False
-                exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -1366,9 +1363,7 @@ def settings():
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run_settings = False
-                exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -1920,7 +1915,7 @@ def ai(speed, username):
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_over(50, 50, 50, 50, mouse):  # PAUSE BUTTON
@@ -2136,7 +2131,7 @@ def multiplayer(speed, p1_name, p2_name):
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_over(50, 50, 50, 50, mouse): pause('s') # CLICKING PAUSE BUTTON
@@ -2255,7 +2250,7 @@ def menu():
         # EVENT LOOP
         for event in pygame.event.get():
             
-            if event.type == pygame.QUIT:exit()
+            if event.type == pygame.QUIT:sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN: # PRESSING THE MOUSE BUTTON
                 # click = True
@@ -2277,13 +2272,13 @@ def menu():
             show_txt('Do you want to quit?', 230, 230, 230, 37, 330, 320)
             quit_yes = Button__(370,410,100,50,light_pink,med_pink,dark_pink,mouse,click,'YES',40).button_blit()
             quit_no = Button__(520,410,100,50,light_cyan,med_cyan,dark_cyan,mouse,click,'NO',40).button_blit()
-            if quit_yes == True:exit()
+            if quit_yes == True:sys.exit()
             elif quit_no == True:quit_confirmation = False
 
         if (r, g, b) <= (220, 220, 220):# FADING IN THE PONG TEXT
-                if r <= 255:r += 4
-                if g <= 255:g += 4
-                if b <= 255:b += 4
+                if r <= 255:r += 3
+                if g <= 255:g += 3
+                if b <= 255:b += 3
 
         if count == 1:
             # RISING PONG
