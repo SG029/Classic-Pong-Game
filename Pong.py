@@ -238,7 +238,6 @@ def icon_rot(angle_x):
     screen.blit(img, (950 - int(img.get_width() / 2),
                 750 - int(img.get_height() / 2)))
 
-
 # CREATING FUNCTION TO GET THE NAMES OF 2 PLAYERS WHEN MULTIPLAYER MODE IS BEING PLAYED
 def mul_name(speed):
     global disk_rot
