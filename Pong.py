@@ -1922,6 +1922,13 @@ def ai(speed, username):
             end = Button__(740,25,100,45,(200,200,200),(170,170,170),(80,80,80),mouse,click,'END',30,15).button_blit()
             if end == True:
                 var_obj.run_ai = False ; run_ai = False ; var_obj.run_menu_play_1 = True ; var_obj.run_mul_name = False ; var_obj.run_ai = False ; var_obj.run_mul = False 
+                try:
+                    if p_s > high_score_ai_free:
+                        high_score_ai_free = p_s
+                        query = """update classic_pong_game set High_score_free =? where Name = ?"""
+                        value = (high_score_ai_free,username)
+                        mycursor.execute(query,value);mydb.commit()
+                except:pass
             end = False 
         else:
             p_width = show_txt(username,255,255,255,40,p_s_x,20)
@@ -1930,7 +1937,6 @@ def ai(speed, username):
             c_s_x = 350-(p_width/2)
 
             for life in range(lives):show_png_img('Images\heart.png', 620+(55*life), 90)  # DISPLAYING THE LIFE
-                
             for life in range(c_lives): show_png_img('Images\heart.png', 220+(55*life), 90) # DISPLAYING THE LIFE
                 
 
