@@ -14,7 +14,7 @@
 #   | \_| |  | |  | |  | |  | |  | |__
 #    \____|  |_|  |_|  |_|  |_|  |____|
 #
-#  PROJECT NAME - CLASSIC PONG GAME 
+#  PROJECT NAME - CLASSIC PONG GAME
 #  MADE BY - SUSHANT GOLA
 #  CLASS - XII-A
 #  ROLL NUMBER - 40
@@ -23,8 +23,12 @@
 
 
 # IMPORTING MODULES
-try:import pygame
-except:import os;os.system('cmd.exe /c pip install pygame');import pygame
+try:
+    import pygame
+except:
+    import os
+    os.system('cmd.exe /c pip install pygame')
+    import pygame
 import pickle
 import random
 from pygame import mixer
@@ -44,8 +48,11 @@ pygame.display.set_icon(icon)
 # CONNECTING TO MYSQL DATABASE
 mydb = sqlite3.connect('Database.db')
 mycursor = mydb.cursor()
-try:mycursor.execute("CREATE TABLE classic_pong_game (Name VARCHAR(20), Password VARCHAR(15), High_score int(11), High_score_free int(11))")
-except:pass
+try:
+    mycursor.execute(
+        "CREATE TABLE classic_pong_game (Name VARCHAR(20), Password VARCHAR(15), High_score int(11), High_score_free int(11))")
+except:
+    pass
 
 # COLOURS
 light_green = (127, 220, 0)
@@ -77,15 +84,20 @@ grey = (70, 70, 70)
 black = (0, 0, 0)
 
 # SETTING THE FPS
-clock = pygame.time.Clock() ; angle_x = 0
+clock = pygame.time.Clock()
+angle_x = 0
 
 # CREATING THE MOUSE FUNCTION WHICH GETS THE MOUSE FUNCTON
+
+
 def mouse_over(x, y, w, h, pos):
     if pos[0] >= x and pos[0] <= x + w:
         if pos[1] >= y and pos[1] <= y + h:
             return x, y, True
 
 # CREATING THE FUNCTION TO SHOW THE TEXT ON THE SCREEN
+
+
 def show_txt(text, r, g, b, size, x, y):
     global width
     score_font = pygame.font.Font("comicsansms.ttf", size)
@@ -95,18 +107,22 @@ def show_txt(text, r, g, b, size, x, y):
     return width
 
 # CREATING CLASS WHICH RESUMES OR PAUSES THE GAME
+
+
 class Res:
 
     def __init__(self, resume):
         self.resume = resume
 
     def get_res(self):
-        return self.resume # RETURNS THE VALUE OF RESUME VARIABLE
+        return self.resume  # RETURNS THE VALUE OF RESUME VARIABLE
 
     def update(self, val):
-        self.resume = val # UPDATES THE VALUE OF TRESUME FUNTION
+        self.resume = val  # UPDATES THE VALUE OF TRESUME FUNTION
 
-game_obj = Res(False) # CREATING THE OBJECT OF Res CLASS
+
+game_obj = Res(False)  # CREATING THE OBJECT OF Res CLASS
+
 
 class Var:
 
@@ -156,8 +172,7 @@ class Var:
     run_menu_play_1 = True
     run_mul_name = True
 
-
-    def return_var(): # PROCESSING THE VALUE OF VARIABLES AND RETURNING THEM AS A LIST
+    def return_var():  # PROCESSING THE VALUE OF VARIABLES AND RETURNING THEM AS A LIST
 
         if Var.selecting_bg_img == True and Var.image_clicked == True:
             Var.none_selected_bg = False
@@ -189,9 +204,12 @@ class Var:
 
         return lst
 
-var_obj = Var # CREATING THE OBJECT OF Var CLASS
+
+var_obj = Var  # CREATING THE OBJECT OF Var CLASS
 
 # THIS CLASS CONTAINS THE TEXT VALUE AND ITS OTHER ATTRIBUTES
+
+
 class Text:
     text = ""
     show_pass = False
@@ -199,62 +217,114 @@ class Text:
     cursor_present = False
 
 # THIS CLASS CREATES THE BUTTON
-class Button__:
-    
-    def __init__(self,x,y,w,h,light,med,dark,pos,click,text,text_size,curvature = 15): # CONSTRUCTOR
-        self.x = x;self.y = y;self.w = w;self.h = h ; self.curvature = curvature
-        self.click = click;self.light = light;self.med = med;self.dark = dark;self.pos = pos
-        self.text = text;self.text_size = text_size
-    
-    def button_blit(self,quit_conf = False):
-        # CHANGING THE COLOR OF THE BUTTON WHEN CLICKED OR HOWERING AND RETURNING THE COMMAND
-        if mouse_over(self.x,self.y,self.w,self.h,self.pos) and quit_conf == False:
-            if self.click == False:button_color = self.med ; command = False 
-            else:button_color = self.dark ; command = True
-        else:button_color = self.light ; command = False
 
-        pygame.draw.rect(screen,button_color,(self.x,self.y,self.w,self.h),0,self.curvature) # DRAWING THE BUTTON
-        
-        score_font = pygame.font.Font("comicsansms.ttf", self.text_size) ; score_render = score_font.render(self.text, True, (20, 20, 20)) # LOADING AND RENDERING THE TEXT
-        width = score_render.get_width() ; height = score_render.get_height() ; text_x = (self.x)+(self.w/2)-(width/2) ; text_y = (self.y)+(self.h/2)-(height/2) # SETTING THE CORDINATES OF THE TEXT
-        screen.blit(score_render, (text_x, text_y)) # WRITING THE TEXT ON THE SCREEN
+
+class Button__:
+
+    def __init__(self, x, y, w, h, light, med, dark, pos, click, text, text_size, curvature=15):  # CONSTRUCTOR
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.curvature = curvature
+        self.click = click
+        self.light = light
+        self.med = med
+        self.dark = dark
+        self.pos = pos
+        self.text = text
+        self.text_size = text_size
+
+    def button_blit(self, quit_conf=False):
+        # CHANGING THE COLOR OF THE BUTTON WHEN CLICKED OR HOWERING AND RETURNING THE COMMAND
+        if mouse_over(self.x, self.y, self.w, self.h, self.pos) and quit_conf == False:
+            if self.click == False:
+                button_color = self.med
+                command = False
+            else:
+                button_color = self.dark
+                command = True
+        else:
+            button_color = self.light
+            command = False
+
+        pygame.draw.rect(screen, button_color, (self.x, self.y,
+                         self.w, self.h), 0, self.curvature)  # DRAWING THE BUTTON
+
+        score_font = pygame.font.Font("comicsansms.ttf", self.text_size)
+        # LOADING AND RENDERING THE TEXT
+        score_render = score_font.render(self.text, True, (20, 20, 20))
+        width = score_render.get_width()
+        height = score_render.get_height()
+        text_x = (self.x)+(self.w/2)-(width/2)
+        # SETTING THE CORDINATES OF THE TEXT
+        text_y = (self.y)+(self.h/2)-(height/2)
+        # WRITING THE TEXT ON THE SCREEN
+        screen.blit(score_render, (text_x, text_y))
         return command
 
 # CREATING FUNCTION TO RENDER THE IMAGE ON THE SCREEN
+
+
 def bg_img(name, x, y):
     load = pygame.image.load(name).convert()
     screen.blit(load, (x, y))
 
 # CREATING FUNCTION TO RENDER THE IMAGE ON THE SCREEN
+
+
 def show_png_img(name, x, y):
     load = pygame.image.load(name).convert_alpha()
     screen.blit(load, (x, y))
 
 # CREATING THE FUNCTION TO ROTATE THE MUSIC ICON AT THE BOTTOM
+
+
 def icon_rot(angle_x):
     # LOADING AND ROTATING THE MUSIC ICON
-    img = pygame.transform.rotate(pygame.image.load('Images\Music_icon.png').convert_alpha(), angle_x)
+    img = pygame.transform.rotate(pygame.image.load(
+        'Images\Music_icon.png').convert_alpha(), angle_x)
     # CENTER CORDINATES OF THE ICON --> (950,750)
     screen.blit(img, (950 - int(img.get_width() / 2),
                 750 - int(img.get_height() / 2)))
 
 # CREATING A TIME COUNTER
-def time_counter(start,x,y,size):
+
+
+def time_counter(start, x, y, size):
     global time_var
     stop = time.time()
-    if stop-start > 1 : # INCREASING THE TIME
-        time_var[5]+=1 ; start = stop
-        if time_var[5]>9:time_var[5] = 0 ; time_var[4] += 1
-        if time_var[4]>5:time_var[5] = 0 ; time_var[4] = 0 ; time_var[3]+=1
-        if time_var[3]>9:time_var[2]+=1 ; time_var[3] = 0
-        if time_var[2]>5:time_var[2]=0 ; time_var[3]=0 ; time_var[1]+=1
-        if time_var[1]>9:time_var[0]+=1 ; time_var[1] = 0
-    def show_time(): # SHOWINF THE TIME
-        time_str = str(time_var[0]) + str(time_var[1]) + ":" + str(time_var[2]) + str(time_var[3]) + ":" + str(time_var[4]) + str(time_var[5]) 
-        show_txt(time_str , 255,255,255,size,x,y)
-    show_time() ; return start
+    if stop-start > 1:  # INCREASING THE TIME
+        time_var[5] += 1
+        start = stop
+        if time_var[5] > 9:
+            time_var[5] = 0
+            time_var[4] += 1
+        if time_var[4] > 5:
+            time_var[5] = 0
+            time_var[4] = 0
+            time_var[3] += 1
+        if time_var[3] > 9:
+            time_var[2] += 1
+            time_var[3] = 0
+        if time_var[2] > 5:
+            time_var[2] = 0
+            time_var[3] = 0
+            time_var[1] += 1
+        if time_var[1] > 9:
+            time_var[0] += 1
+            time_var[1] = 0
+
+    def show_time():  # SHOWINF THE TIME
+        time_str = str(time_var[0]) + str(time_var[1]) + ":" + str(time_var[2]) + \
+            str(time_var[3]) + ":" + str(time_var[4]) + str(time_var[5])
+        show_txt(time_str, 255, 255, 255, size, x, y)
+    show_time()
+    return start
 
 # CREATING FUNCTION TO GET THE NAMES OF 2 PLAYERS WHEN MULTIPLAYER MODE IS BEING PLAYED
+
+
 def mul_name(speed):
     global disk_rot
     global click_muted
@@ -263,17 +333,18 @@ def mul_name(speed):
     angle_x = 0
     music_rotating_check = 1
 
-    var_obj.run_mul_name = True 
+    var_obj.run_mul_name = True
     run_mul_name = True
-    
+
     p1_empty, p2_empty = False, False
     click = False
-    cursor_placement= None
+    cursor_placement = None
 
     mulp1_obj = Text()
     mulp2_obj = Text()
 
-    cursor_cordinates = {mulp1_obj : [365, 505], mulp2_obj : [365, 605]} # THIS DICT CONTAINS THE CORDINATES OF THE INPUT BOX
+    # THIS DICT CONTAINS THE CORDINATES OF THE INPUT BOX
+    cursor_cordinates = {mulp1_obj: [365, 505], mulp2_obj: [365, 605]}
 
     while run_mul_name:
 
@@ -284,13 +355,21 @@ def mul_name(speed):
         mouse = pygame.mouse.get_pos()  # GETTING THE MOUSE CORDINATES
         # pygame.draw.rect(screen, c_ok, (700, 700, 110, 55))  # DRAWING THE OK BUTTON
 
-        ok_command  = Button__(700, 700, 110, 55,light_pink,med_pink,dark_pink,mouse,click,'Next',40).button_blit()
+        ok_command = Button__(700, 700, 110, 55, light_pink, med_pink,
+                              dark_pink, mouse, click, 'Next', 40).button_blit()
 
         if ok_command == True:
-            if len(mulp1_obj.text) != 0: # CHECKING IF THE NAME IS VALID OR NOT 
-                if len(mulp2_obj.text) == 0:p1_empty = False; p2_empty = True
-                else:p1_empty = False ; p2_empty = False ; multiplayer(speed, mulp1_obj.text, mulp2_obj.text)
-            else:p1_empty = True ; p2_empty = False
+            if len(mulp1_obj.text) != 0:  # CHECKING IF THE NAME IS VALID OR NOT
+                if len(mulp2_obj.text) == 0:
+                    p1_empty = False
+                    p2_empty = True
+                else:
+                    p1_empty = False
+                    p2_empty = False
+                    multiplayer(speed, mulp1_obj.text, mulp2_obj.text)
+            else:
+                p1_empty = True
+                p2_empty = False
 
         # CALLING show_text() TO DISPLAY THE TEXT ON WINDOW
         show_txt('Controls', 255, 255, 255, 50, 401, 55)
@@ -356,12 +435,14 @@ def mul_name(speed):
         show_txt('Move tile down', 255, 255, 255, 20, 825, 383)
 
         # P1 BOX AND TEXT
-        mulp1_obj.width = show_txt(mulp1_obj.text, 255, 255, 255, 30, 367.5, 510)
+        mulp1_obj.width = show_txt(
+            mulp1_obj.text, 255, 255, 255, 30, 367.5, 510)
         pygame.draw.rect(screen, (255, 255, 255),
                          (360, 505, mulp1_obj.width + 42, 55), 2)
 
         # P2 BOX AND TEXT
-        mulp2_obj.width = show_txt(mulp2_obj.text, 255, 255, 255, 30, 367.5, 610)
+        mulp2_obj.width = show_txt(
+            mulp2_obj.text, 255, 255, 255, 30, 367.5, 610)
         pygame.draw.rect(screen, (255, 255, 255),
                          (360, 605, mulp2_obj.width + 42, 55), 2)
 
@@ -374,19 +455,21 @@ def mul_name(speed):
         elif p2_empty == True:
             show_txt('Enter player 2 name.', 200, 50, 50, 40, 200, 690)
 
-        for key,value in cursor_cordinates.items(): # DRAWING THE CURSOR AT THE END OF THE TEXT
+        for key, value in cursor_cordinates.items():  # DRAWING THE CURSOR AT THE END OF THE TEXT
             if key == cursor_placement:
-                show_txt('_',255,255,255,30,value[0]+cursor_placement.width+5,value[1])
-
+                show_txt('_', 255, 255, 255, 30,
+                         value[0]+cursor_placement.width+5, value[1])
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
+            if event.type == pygame.QUIT:
+                sys.exit()
 
             # WHEN THE MOUSEBUTON IS PRESSED
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # PRESSING THE OK BUTTON
-                if mouse_over(700, 700, 110, 55, mouse):click = True
+                if mouse_over(700, 700, 110, 55, mouse):
+                    click = True
 
                 elif mouse_over(925, 725, 50, 50, mouse):  # MUTING/UNMUTING THE MUSIC
                     click = True
@@ -406,12 +489,12 @@ def mul_name(speed):
 
                 # SELECTING THE 1ST PLAYER INPUT BOX
                 if mouse_over(365.5, 505, mulp1_obj.width + 25, 55, mouse):
-                    cursor_placement = mulp1_obj # CHANGING THE VALUE OF CURSOR_PLACEMENT
+                    cursor_placement = mulp1_obj  # CHANGING THE VALUE OF CURSOR_PLACEMENT
                     cursor_placement.cursor_present = True
 
                 # SELECTING THE 2ND PLAYER INPUT BOX
-                elif mouse_over(367.5, 605,mulp2_obj.width + 25, 55, mouse):
-                    cursor_placement = mulp2_obj # CHANGING THE VALUE OF CURSOR_PLACEMENT
+                elif mouse_over(367.5, 605, mulp2_obj.width + 25, 55, mouse):
+                    cursor_placement = mulp2_obj  # CHANGING THE VALUE OF CURSOR_PLACEMENT
                     cursor_placement.cursor_present = True
 
                 else:
@@ -429,17 +512,20 @@ def mul_name(speed):
                 if event.key == pygame.K_BACKSPACE:
                     try:
                         if cursor_placement.cursor_present == True:  # BACKSPACE IS PRESSED
-                            cursor_placement.text = cursor_placement.text[:-1] 
-                    except:pass
-                else: # ADDING TEXT TO THE NAME
+                            cursor_placement.text = cursor_placement.text[:-1]
+                    except:
+                        pass
+                else:  # ADDING TEXT TO THE NAME
                     try:
-                        if len(cursor_placement.text) < 15 and cursor_placement.cursor_present: cursor_placement.text+=event.unicode # SETTING THE LIMIT FOR NUMBER OF WORDS
-                    except:pass
+                        if len(cursor_placement.text) < 15 and cursor_placement.cursor_present:
+                            cursor_placement.text += event.unicode  # SETTING THE LIMIT FOR NUMBER OF WORDS
+                    except:
+                        pass
 
-        if disk_rot == False: # MUSIC MUTED
+        if disk_rot == False:  # MUSIC MUTED
             show_png_img('Images\Music_icon.png', 925, 725)
             pygame.draw.line(screen, light_red, (925, 725), (975, 775), 5)
-        elif disk_rot == True: # MUSIC RESUMED
+        elif disk_rot == True:  # MUSIC RESUMED
             angle_x -= 2
             icon_rot(angle_x)
 
@@ -450,12 +536,15 @@ def mul_name(speed):
     return mulp1_obj.text, mulp2_obj.text
 
 # CREATING FUNCTION WHICH DECLARES THE WINNER
-def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
+
+
+def win_lose_screen(l1, l2, p1_name=None, p2_name=None):
     global disk_rot
-    
+
     mixer.music.load('Music\Menu music.mp3')
     mixer.music.play(-1)
-    if disk_rot == False:mixer.music.pause()
+    if disk_rot == False:
+        mixer.music.pause()
 
     click = False
     run_w_l = True
@@ -467,32 +556,53 @@ def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
 
     while run_w_l == True:
 
-        load = pygame.image.load('Images\stars.png').convert()  # RENDERING BG IMAGE
+        load = pygame.image.load(
+            'Images\stars.png').convert()  # RENDERING BG IMAGE
         screen.blit(load, (0, 0))
         stop = time.time()
-        mouse = pygame.mouse.get_pos() # GETTING MOUSE CORDINATES
+        mouse = pygame.mouse.get_pos()  # GETTING MOUSE CORDINATES
 
-        p_a_command = Button__(300, 300, 400, 60,light_pink,med_pink,dark_pink,mouse,click,'PLAY AGAIN',50).button_blit(quit_confirmation)
-        settings_command = Button__(300, 400, 400, 60,light_cyan,med_cyan,dark_cyan,mouse,click,'SETTINGS',50).button_blit(quit_confirmation)
-        main_menu_command = Button__(300, 500, 400, 60,light_mint,med_mint,dark_mint,mouse,click,'MAIN MENU',50).button_blit(quit_confirmation)
-        quit_command = Button__(300, 600, 400, 60,light_peach,med_peach,dark_peach,mouse,click,'QUIT', 50).button_blit(quit_confirmation)
+        p_a_command = Button__(300, 300, 400, 60, light_pink, med_pink, dark_pink,
+                               mouse, click, 'PLAY AGAIN', 50).button_blit(quit_confirmation)
+        settings_command = Button__(300, 400, 400, 60, light_cyan, med_cyan,
+                                    dark_cyan, mouse, click, 'SETTINGS', 50).button_blit(quit_confirmation)
+        main_menu_command = Button__(300, 500, 400, 60, light_mint, med_mint,
+                                     dark_mint, mouse, click, 'MAIN MENU', 50).button_blit(quit_confirmation)
+        quit_command = Button__(300, 600, 400, 60, light_peach, med_peach,
+                                dark_peach, mouse, click, 'QUIT', 50).button_blit(quit_confirmation)
 
-        if quit_confirmation == False and stop-start>2 and click == True:
-            if p_a_command == True:run_w_l = False ; var_obj.run_menu_play_1 = True ; var_obj.run_mul_name = False ; var_obj.run_ai = False ; var_obj.run_mul = False 
-            elif settings_command == True:settings()
-            elif quit_command == True:quit_confirmation = True
-            elif main_menu_command == True:run_w_l = False ; var_obj.run_ai = False ; var_obj.run_mul = False ; var_obj.run_i_s = False ; var_obj.run_menu_play_1 = False ; var_obj.run_mul_name = False
-            click = False;start = stop
+        if quit_confirmation == False and stop-start > 2 and click == True:
+            if p_a_command == True:
+                run_w_l = False
+                var_obj.run_menu_play_1 = True
+                var_obj.run_mul_name = False
+                var_obj.run_ai = False
+                var_obj.run_mul = False
+            elif settings_command == True:
+                settings()
+            elif quit_command == True:
+                quit_confirmation = True
+            elif main_menu_command == True:
+                run_w_l = False
+                var_obj.run_ai = False
+                var_obj.run_mul = False
+                var_obj.run_i_s = False
+                var_obj.run_menu_play_1 = False
+                var_obj.run_mul_name = False
+            click = False
+            start = stop
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
-                
+            if event.type == pygame.QUIT:
+                sys.exit()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
-                
-                if quit_confirmation == False: # IF QUIT CLICKED IS FALSE THEN RUN THIS
-                    if mouse_over(300, 300, 400, 60,mouse) or mouse_over(300, 400, 400, 60,mouse) or  mouse_over(300, 500, 400, 60,mouse) or mouse_over(300, 600, 400, 60,mouse):click = True
-                    
+
+                if quit_confirmation == False:  # IF QUIT CLICKED IS FALSE THEN RUN THIS
+                    if mouse_over(300, 300, 400, 60, mouse) or mouse_over(300, 400, 400, 60, mouse) or mouse_over(300, 500, 400, 60, mouse) or mouse_over(300, 600, 400, 60, mouse):
+                        click = True
+
                 elif quit_confirmation == True:
                     if mouse_over(370, 410, 100, 50, mouse) or mouse_over(520, 410, 100, 50, mouse):
                         click = True
@@ -508,51 +618,58 @@ def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
                         mixer.music.unpause()
                         disk_rot = True
 
-                if click == True and click_muted == False: # PLAYING CLICK SOUND IF click_muted = False
-                    mixer.Sound('Music\Click.wav').play() 
+                if click == True and click_muted == False:  # PLAYING CLICK SOUND IF click_muted = False
+                    mixer.Sound('Music\Click.wav').play()
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 click = False
 
-        if quit_confirmation == True: # CONFIRMING IF THE PLAYER WANT TO QUIT THE GAME
+        if quit_confirmation == True:  # CONFIRMING IF THE PLAYER WANT TO QUIT THE GAME
             mouse = pygame.mouse.get_pos()
             pygame.draw.rect(screen, (50, 50, 50), (300, 300, 400, 200))
             pygame.draw.rect(screen, (255, 255, 255), (300, 300, 400, 200), 5)
             show_txt('Do you want to quit?', 230, 230, 230, 37, 330, 320)
-            quit_yes = Button__(370,410,100,50,light_pink,med_pink,dark_pink,mouse,click,'YES',40).button_blit()
-            quit_no = Button__(520,410,100,50,light_cyan,med_cyan,dark_cyan,mouse,click,'NO',40).button_blit()
-            if quit_yes == True:sys.exit()
-            elif quit_no == True:quit_confirmation = False
+            quit_yes = Button__(370, 410, 100, 50, light_pink, med_pink,
+                                dark_pink, mouse, click, 'YES', 40).button_blit()
+            quit_no = Button__(520, 410, 100, 50, light_cyan, med_cyan,
+                               dark_cyan, mouse, click, 'NO', 40).button_blit()
+            if quit_yes == True:
+                sys.exit()
+            elif quit_no == True:
+                quit_confirmation = False
             click = False
 
-        if a_i == True: # DECLARING THE WINNER
+        if a_i == True:  # DECLARING THE WINNER
             if l1 < l2:
-                show_txt('Congratulations', 255,255,255,80,210.5,40)
-                show_txt('You won!!',255,255,255,70,352.5,150)
+                show_txt('Congratulations', 255, 255, 255, 80, 210.5, 40)
+                show_txt('You won!!', 255, 255, 255, 70, 352.5, 150)
             else:
-                show_txt('You lose!!',255,255,255,70,349.5,50)
-                show_txt('Try again...',255,255,255,60,348.5,150)
+                show_txt('You lose!!', 255, 255, 255, 70, 349.5, 50)
+                show_txt('Try again...', 255, 255, 255, 60, 348.5, 150)
 
-        elif hum == True or free_hum == True: # DECLARING THE WINNER
-            show_txt('Congratulations', 255,255,255,80,210.5,40)
+        elif hum == True or free_hum == True:  # DECLARING THE WINNER
+            show_txt('Congratulations', 255, 255, 255, 80, 210.5, 40)
             if l1 < l2:
-                txt_w = show_txt(p2_name+' won!!',255,255,255,60,txt_x,150)
+                txt_w = show_txt(p2_name+' won!!', 255,
+                                 255, 255, 60, txt_x, 150)
                 txt_x = 500-(txt_w/2)
             else:
-                txt_w = show_txt(p1_name+' won!!',255,255,255,60,txt_x,150)
+                txt_w = show_txt(p1_name+' won!!', 255,
+                                 255, 255, 60, txt_x, 150)
                 txt_x = 500-(txt_w/2)
 
-
-        if disk_rot == False: # ROTATION STOPPED
+        if disk_rot == False:  # ROTATION STOPPED
             show_png_img('Images\Music_icon.png', 925, 725)
             pygame.draw.line(screen, light_red, (925, 725), (975, 775), 5)
-        elif disk_rot == True: # ROTATION CONTINUED
+        elif disk_rot == True:  # ROTATION CONTINUED
             angle_x -= 2
             icon_rot(angle_x)
 
         pygame.display.update()
 
 # CREATING THE PAUSE SCREEN
+
+
 def pause(username):
     global run_ai, run_mul, run, run_pause
     global high_score_ai_free
@@ -577,32 +694,52 @@ def pause(username):
         mouse = pygame.mouse.get_pos()  # GETTING MOUSE CORDINATES
 
         # DRAWING BUTTONS ON SCREEN
-        resume_command = Button__(300, 300, 400, 60,light_pink,med_pink,dark_pink,mouse,click,'RESUME',50).button_blit(quit_confirmation)
-        settings_command = Button__(300, 400, 400, 60,light_cyan,med_cyan,dark_cyan,mouse,click,'SETTINGS',50).button_blit(quit_confirmation)
-        main_menu_command = Button__(300, 500, 400, 60,light_mint,med_mint,dark_mint,mouse,click,'MAIN MENU',50).button_blit(quit_confirmation)
-        quit_command = Button__(300, 600, 400, 60,light_peach,med_peach,dark_peach,mouse,click,'QUIT', 50).button_blit(quit_confirmation)
+        resume_command = Button__(300, 300, 400, 60, light_pink, med_pink,
+                                  dark_pink, mouse, click, 'RESUME', 50).button_blit(quit_confirmation)
+        settings_command = Button__(300, 400, 400, 60, light_cyan, med_cyan,
+                                    dark_cyan, mouse, click, 'SETTINGS', 50).button_blit(quit_confirmation)
+        main_menu_command = Button__(300, 500, 400, 60, light_mint, med_mint,
+                                     dark_mint, mouse, click, 'MAIN MENU', 50).button_blit(quit_confirmation)
+        quit_command = Button__(300, 600, 400, 60, light_peach, med_peach,
+                                dark_peach, mouse, click, 'QUIT', 50).button_blit(quit_confirmation)
 
-        if quit_confirmation == False and stop-start>1 and click == True:
-            if resume_command == True:game_obj.update(True);run_pause = False
-            elif settings_command == True:settings()
-            elif quit_command == True:quit_confirmation = True
+        if quit_confirmation == False and stop-start > 1 and click == True:
+            if resume_command == True:
+                game_obj.update(True)
+                run_pause = False
+            elif settings_command == True:
+                settings()
+            elif quit_command == True:
+                quit_confirmation = True
             elif main_menu_command == True:
                 try:
                     if free_ai == True:  # UPDATING THE HIGH SCORE FOR FREEPLAY_AI
                         if p_s > high_score_ai_free:
                             high_score_ai_free = p_s
                             query = """update classic_pong_game set High_score_free = ? where Name = ?"""
-                            value = (high_score_ai_free,username)
-                            mycursor.execute(query,value);mydb.commit()
-                except:pass
-                run_pause = False;var_obj.run_ai = False;var_obj.run_mul = False;var_obj.run_i_s = False;var_obj.run_menu_play_1 = False;var_obj.run_mul_name = False
-                mixer.music.load("Music\Menu music.mp3") ; mixer.music.play(-1) ; click = True
-                if disk_rot == False:mixer.music.pause()
-            click = False;start = stop
-        
+                            value = (high_score_ai_free, username)
+                            mycursor.execute(query, value)
+                            mydb.commit()
+                except:
+                    pass
+                run_pause = False
+                var_obj.run_ai = False
+                var_obj.run_mul = False
+                var_obj.run_i_s = False
+                var_obj.run_menu_play_1 = False
+                var_obj.run_mul_name = False
+                mixer.music.load("Music\Menu music.mp3")
+                mixer.music.play(-1)
+                click = True
+                if disk_rot == False:
+                    mixer.music.pause()
+            click = False
+            start = stop
+
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
+            if event.type == pygame.QUIT:
+                sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_over(925, 725, 50, 50, mouse):
@@ -630,13 +767,15 @@ def pause(username):
             if event.type == pygame.MOUSEBUTTONUP:
                 click = False
 
-        if quit_confirmation == True: # CONFIRMING IF THE PLAYER WANT TO QUIT THE GAME
+        if quit_confirmation == True:  # CONFIRMING IF THE PLAYER WANT TO QUIT THE GAME
             mouse = pygame.mouse.get_pos()
             pygame.draw.rect(screen, (50, 50, 50), (300, 300, 400, 200))
             pygame.draw.rect(screen, (255, 255, 255), (300, 300, 400, 200), 5)
             show_txt('Do you want to quit?', 230, 230, 230, 37, 330, 320)
-            quit_yes = Button__(370,410,100,50,light_pink,med_pink,dark_pink,mouse,click,'YES',40).button_blit()
-            quit_no = Button__(520,410,100,50,light_cyan,med_cyan,dark_cyan,mouse,click,'NO',40).button_blit()
+            quit_yes = Button__(370, 410, 100, 50, light_pink, med_pink,
+                                dark_pink, mouse, click, 'YES', 40).button_blit()
+            quit_no = Button__(520, 410, 100, 50, light_cyan, med_cyan,
+                               dark_cyan, mouse, click, 'NO', 40).button_blit()
             if quit_yes == True:
                 click = True
                 try:
@@ -644,31 +783,36 @@ def pause(username):
                         if p_s > high_score_ai_free:
                             high_score_ai_free = p_s
                             query = """update classic_pong_game set High_score_free =? where Name = ?"""
-                            value = (high_score_ai_free,username)
-                            mycursor.execute(query,value);mydb.commit()
-                except:pass
+                            value = (high_score_ai_free, username)
+                            mycursor.execute(query, value)
+                            mydb.commit()
+                except:
+                    pass
                 sys.exit()
-            elif quit_no == True:quit_confirmation = False;click = True
+            elif quit_no == True:
+                quit_confirmation = False
+                click = True
             click = False
 
-
-        if disk_rot == False: # rotation stopped
+        if disk_rot == False:  # rotation stopped
             show_png_img('Images\Music_icon.png', 925, 725)
             pygame.draw.line(screen, light_red, (925, 725), (975, 775), 5)
-        elif disk_rot == True: # ROATION CONTINUED
+        elif disk_rot == True:  # ROATION CONTINUED
             angle_x -= 2
             icon_rot(angle_x)
 
         pygame.display.update()
 
 # CREATING FUNCTION TO CHOOSE THE LEVEL
+
+
 def menu_play_1(user_name):
 
     # GLOBAL VAIRABLES
     global click_muted
     global speed_level
     global a_i, hum, free_ai, free_hum
-    global disk_rot , time_var
+    global disk_rot, time_var
 
     # VARIABLES
     vs_x = 350
@@ -678,114 +822,173 @@ def menu_play_1(user_name):
     comp_reached, comp_starting, comp_back = False, False, False
     music_rotating_check = 1
     a_i, hum, free_ai, free_hum = False, False, False, False
-    angle_x = 0 ; click_s = False ; user_width = 200
-    
-    user_name = var_obj.username # GETTING USERNAME OF THE PLAYER
+    angle_x = 0
+    click_s = False
+    user_width = 200
+
+    user_name = var_obj.username  # GETTING USERNAME OF THE PLAYER
 
     while run_menu_play_1:
 
-        bg_img('Images\stars.png', 0, 0) # BG IMAGE
+        bg_img('Images\stars.png', 0, 0)  # BG IMAGE
         show_txt('Select your mode :-', 240, 240, 240, 70, 200, 130)
-        show_png_img('Images\Back button.png', 30, 720) # RENDERING BACK BUTTON
+        show_png_img('Images\Back button.png', 30,
+                     720)  # RENDERING BACK BUTTON
 
-        mouse = pygame.mouse.get_pos() # GETTING MOUSE CORDINATES
+        mouse = pygame.mouse.get_pos()  # GETTING MOUSE CORDINATES
 
         # SHOWING USERNAME OF THE PLAYER
         pygame.draw.rect(screen, (100, 100, 100), (0, 0, 195+(user_width), 75))
-        pygame.draw.rect(screen, (255, 255, 255), (0, 0, 195+(user_width), 75), 5)
+        pygame.draw.rect(screen, (255, 255, 255),
+                         (0, 0, 195+(user_width), 75), 5)
         show_txt('Username - ', 255, 255, 255, 30, 15, 15)
         user_width = show_txt(user_name, 255, 255, 255, 30, 180, 15)
 
         # DRAWING THE BUTTONS
-        free_hum_command = Button__(vs_x, 600, 300, 50,light_peach,med_peach,dark_peach,mouse,click_s,'Freeplay Human',40,15).button_blit()
-        free_ai_command = Button__(vs_x, 500, 300, 50,light_sand,med_sand,dark_sand,mouse,click_s,'Freeplay AI',40,15).button_blit()
-        ai_command = Button__(vs_x, 300, 300, 50,light_mint,med_mint,dark_mint,mouse,click_s,'vs AI',40,15).button_blit()
-        hum_command = Button__(vs_x, 400, 300, 50,light_slategray,med_slategray,dark_slategray,mouse,click_s,'vs Human',40,15).button_blit()
+        free_hum_command = Button__(vs_x, 600, 300, 50, light_peach, med_peach,
+                                    dark_peach, mouse, click_s, 'Freeplay Human', 40, 15).button_blit()
+        free_ai_command = Button__(vs_x, 500, 300, 50, light_sand, med_sand,
+                                   dark_sand, mouse, click_s, 'Freeplay AI', 40, 15).button_blit()
+        ai_command = Button__(vs_x, 300, 300, 50, light_mint, med_mint,
+                              dark_mint, mouse, click_s, 'vs AI', 40, 15).button_blit()
+        hum_command = Button__(vs_x, 400, 300, 50, light_slategray, med_slategray,
+                               dark_slategray, mouse, click_s, 'vs Human', 40, 15).button_blit()
 
-        if ai_command == True:a_i, hum, free_ai, free_hum = True, False, False, False ; comp_starting = True 
-        elif hum_command == True : a_i, hum, free_ai, free_hum = False, True, False, False ; comp_starting = True 
-        elif free_ai_command == True: a_i, hum, free_ai, free_hum = False, False, True, False ; comp_starting = True 
-        elif free_hum_command == True: a_i, hum, free_ai, free_hum = False, False, False, True ; comp_starting = True 
+        if ai_command == True:
+            a_i, hum, free_ai, free_hum = True, False, False, False
+            comp_starting = True
+        elif hum_command == True:
+            a_i, hum, free_ai, free_hum = False, True, False, False
+            comp_starting = True
+        elif free_ai_command == True:
+            a_i, hum, free_ai, free_hum = False, False, True, False
+            comp_starting = True
+        elif free_hum_command == True:
+            a_i, hum, free_ai, free_hum = False, False, False, True
+            comp_starting = True
 
-        sign_out_command = Button__(650,700,200,50,light_pink,med_pink,dark_pink,mouse,click_s,'Sign out',40).button_blit()
-        if sign_out_command == True: 
-            with open('User.bin','wb') as user_file:user_file.close()
-            var_obj.signed_in = False ; run_menu_play_1 = False ; var_obj.run_menu_play_1 = False ; click_s = False
+        sign_out_command = Button__(650, 700, 200, 50, light_pink, med_pink,
+                                    dark_pink, mouse, click_s, 'Sign out', 40).button_blit()
+        if sign_out_command == True:
+            with open('User.bin', 'wb') as user_file:
+                user_file.close()
+            var_obj.signed_in = False
+            run_menu_play_1 = False
+            var_obj.run_menu_play_1 = False
+            click_s = False
 
         if comp_starting == True:
-            if vs_x > 130:vs_x -= 10 # STARTING THE TRANSITION
+            if vs_x > 130:
+                vs_x -= 10  # STARTING THE TRANSITION
 
-            elif vs_x < 140: # IF TRANSITION ENDED , DRAWING THE LEVEL CHOOSER
+            elif vs_x < 140:  # IF TRANSITION ENDED , DRAWING THE LEVEL CHOOSER
 
                 pygame.draw.rect(screen, (100, 100, 100), (540, 300, 340, 380))
-                pygame.draw.rect(screen, (230, 230, 230),(540, 300, 340, 380), 5)
+                pygame.draw.rect(screen, (230, 230, 230),
+                                 (540, 300, 340, 380), 5)
 
-                easy_command = Button__(610, 400, 200, 50 , light_peach,med_peach,dark_peach,mouse,click_s,'Easy',40).button_blit()
-                med_command = Button__(610, 500, 200, 50 , light_pink,med_pink,dark_pink,mouse,click_s,'Medium',40).button_blit()
-                hard_command = Button__(610, 600, 200, 50 , light_sand,med_sand,dark_sand,mouse,click_s,'Hard',40).button_blit()
+                easy_command = Button__(610, 400, 200, 50, light_peach, med_peach,
+                                        dark_peach, mouse, click_s, 'Easy', 40).button_blit()
+                med_command = Button__(610, 500, 200, 50, light_pink, med_pink,
+                                       dark_pink, mouse, click_s, 'Medium', 40).button_blit()
+                hard_command = Button__(
+                    610, 600, 200, 50, light_sand, med_sand, dark_sand, mouse, click_s, 'Hard', 40).button_blit()
                 if click_s == True:
-                    if easy_command == True: speed_level = 8
-                    elif med_command == True: speed_level = 10
-                    elif hard_command == True: speed_level = 12
+                    if easy_command == True:
+                        speed_level = 8
+                    elif med_command == True:
+                        speed_level = 10
+                    elif hard_command == True:
+                        speed_level = 12
                     if easy_command == True or med_command == True or hard_command == True:
-                        if a_i == True:ai(speed_level, user_name)
-                        elif hum == True:mul_name(speed_level)
-                        elif free_ai == True:ai(speed_level, user_name)
-                        elif free_hum == True:mul_name(speed_level)
+                        if a_i == True:
+                            ai(speed_level, user_name)
+                        elif hum == True:
+                            mul_name(speed_level)
+                        elif free_ai == True:
+                            ai(speed_level, user_name)
+                        elif free_hum == True:
+                            mul_name(speed_level)
                     click_s = False
                 comp_reached = True
 
                 # SELECTING THE FUNCTION
-                if a_i == True:show_txt('Vs A.I.', 230, 230, 230, 40, 650, 320)
-                elif hum == True:show_txt('Vs Human', 230, 230, 230, 40, 620, 320)
-                elif free_ai == True:show_txt('Freeplay (A.I.)', 230, 230, 230, 40, 575, 320)
-                elif free_hum == True:show_txt('Freeplay (Human)', 230, 230, 230, 40, 545, 320)
+                if a_i == True:
+                    show_txt('Vs A.I.', 230, 230, 230, 40, 650, 320)
+                elif hum == True:
+                    show_txt('Vs Human', 230, 230, 230, 40, 620, 320)
+                elif free_ai == True:
+                    show_txt('Freeplay (A.I.)', 230, 230, 230, 40, 575, 320)
+                elif free_hum == True:
+                    show_txt('Freeplay (Human)', 230, 230, 230, 40, 545, 320)
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
+            if event.type == pygame.QUIT:
+                sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
-                if mouse_over(30, 725, 50, 50, mouse): # PRESSING BACK BUTTON
-                    click_s = True ; click = True
+                if mouse_over(30, 725, 50, 50, mouse):  # PRESSING BACK BUTTON
+                    click_s = True
+                    click = True
                     # IF TRANSITION HAS TAKEN PLACE THEN REVERSING THE TRANSITION ELSE TERMINTATIN TH FUCNTION
-                    if comp_reached == False: run_menu_play_1 = False ; var_obj.run_menu_play_1 = False ; var_obj.run_i_s = False
-                    else:comp_starting = False ; comp_back = True
+                    if comp_reached == False:
+                        run_menu_play_1 = False
+                        var_obj.run_menu_play_1 = False
+                        var_obj.run_i_s = False
+                    else:
+                        comp_starting = False
+                        comp_back = True
 
-                if mouse_over(925, 725, 50, 50, mouse): # PAUSING / PLAYING THE MUSIC
-                    click_s = True ; music_rotating_check += 1
-                    if music_rotating_check % 2 == 0: pygame.mixer.music.pause() ; disk_rot = False
-                    elif music_rotating_check % 2 != 0: mixer.music.unpause() ; disk_rot = True
+                if mouse_over(925, 725, 50, 50, mouse):  # PAUSING / PLAYING THE MUSIC
+                    click_s = True
+                    music_rotating_check += 1
+                    if music_rotating_check % 2 == 0:
+                        pygame.mixer.music.pause()
+                        disk_rot = False
+                    elif music_rotating_check % 2 != 0:
+                        mixer.music.unpause()
+                        disk_rot = True
 
                 # PRESSING THE BUTTONS
-                if mouse_over(vs_x, 300, 280, 50, mouse) or mouse_over(vs_x, 400, 280, 50, mouse) or  mouse_over(vs_x, 500, 280, 50, mouse) or  mouse_over(vs_x, 600, 280, 50, mouse) or mouse_over(650,700,200,50,mouse):click_s = True
-                
+                if mouse_over(vs_x, 300, 280, 50, mouse) or mouse_over(vs_x, 400, 280, 50, mouse) or mouse_over(vs_x, 500, 280, 50, mouse) or mouse_over(vs_x, 600, 280, 50, mouse) or mouse_over(650, 700, 200, 50, mouse):
+                    click_s = True
+
                 # CHOSING THE FUNCTIONA AND SETTING UP THE SPEED/LEVEL
                 if comp_reached == True:
                     if mouse_over(610, 400, 200, 50, mouse) or mouse_over(610, 500, 200, 50, mouse) or mouse_over(610, 600, 200, 50, mouse):
                         click_s = True
-                        
-                if click_s == True and click_muted == False: # PLAYING THE CLICK SOUND
-                    click_sound = mixer.Sound('Music\Click.wav') ; click_sound.play()
 
-            if event.type == pygame.MOUSEBUTTONUP: click_s = False
+                if click_s == True and click_muted == False:  # PLAYING THE CLICK SOUND
+                    click_sound = mixer.Sound('Music\Click.wav')
+                    click_sound.play()
 
-        if comp_back == True: # TRANSITION
-            if vs_x < 350:vs_x += 10
-            if vs_x >= 340:comp_back = False ; comp_reached = False
+            if event.type == pygame.MOUSEBUTTONUP:
+                click_s = False
 
-        if disk_rot == False: # MUSIC PAUSED
-            show_png_img('Images\Music_icon.png', 925, 725) ; pygame.draw.line(screen, light_red, (925, 725), (975, 775), 5)
-        elif disk_rot == True: # MUSIC RESUME
-            angle_x -= 2 ; icon_rot(angle_x)
+        if comp_back == True:  # TRANSITION
+            if vs_x < 350:
+                vs_x += 10
+            if vs_x >= 340:
+                comp_back = False
+                comp_reached = False
 
-        time_var = [0,0,0,0,0,0]
+        if disk_rot == False:  # MUSIC PAUSED
+            show_png_img('Images\Music_icon.png', 925, 725)
+            pygame.draw.line(screen, light_red, (925, 725), (975, 775), 5)
+        elif disk_rot == True:  # MUSIC RESUME
+            angle_x -= 2
+            icon_rot(angle_x)
 
-        run_menu_play_1 = var_obj.run_menu_play_1 
-        pygame.display.update() # UPDATING THE SCREEN
+        time_var = [0, 0, 0, 0, 0, 0]
+
+        run_menu_play_1 = var_obj.run_menu_play_1
+        pygame.display.update()  # UPDATING THE SCREEN
 
 # CREATING FUNCTION TO SIGN IN OR LOGIN
+
+
 def input_screen():
 
     global disk_rot
@@ -793,8 +996,8 @@ def input_screen():
 
     # VARIABLES
     music_rotating_check = 1
-    login, signup = True, False    
-    OK_clicked,pass_cp_not_match,OK_clicked_once = False, False, False
+    login, signup = True, False
+    OK_clicked, pass_cp_not_match, OK_clicked_once = False, False, False
     inv_name, inv_pass = False, False
     name_exi = False
     angle_x = 0
@@ -812,33 +1015,38 @@ def input_screen():
     login_pass = Text()
 
     # THIS DICT CONTAINS THE CORDINATES OF THE CURSOR WHICH IS TO BE PLACED AT THE END OF EACH FIELD
-    cursor_cordinates = {signin_name:[378, 374],signin_pass:[363,474],signin_conf_pass:[563,574],
-                         loginn_name:[378,374],login_pass:[363,474]}
+    cursor_cordinates = {signin_name: [378, 374], signin_pass: [363, 474], signin_conf_pass: [563, 574],
+                         loginn_name: [378, 374], login_pass: [363, 474]}
 
     if var_obj.signed_in == False:
         run_i_s = True
         var_obj.run_i_s = True
-    else:run_i_s = False;var_obj.run_i_s = False
+    else:
+        run_i_s = False
+        var_obj.run_i_s = False
 
     while run_i_s:
 
-        bg_img('Images\stars.png', 0, 0) # BG IMAGE
+        bg_img('Images\stars.png', 0, 0)  # BG IMAGE
 
         mouse = pygame.mouse.get_pos()
         stop = time.time()
-        show_png_img('Images\Back button.png', 30, 725) # BACK BUTTON
+        show_png_img('Images\Back button.png', 30, 725)  # BACK BUTTON
 
         if var_obj.signed_in == False:
             run_i_s = True
             var_obj.run_i_s = True
-        else:run_i_s = False;var_obj.run_i_s = False
+        else:
+            run_i_s = False
+            var_obj.run_i_s = False
 
-        mycursor.execute('select * from classic_pong_game') # GETTING DATA FROM DATABASE
-        exist = mycursor.fetchall() 
+        # GETTING DATA FROM DATABASE
+        mycursor.execute('select * from classic_pong_game')
+        exist = mycursor.fetchall()
 
         if OK_clicked == True:
             name_exi = False
-            if signup == True: 
+            if signup == True:
 
                 # IF EACH COLUMN IS PROPERLY FILLED AND PASSWORD & CONFIRM PASSWOD MATCHES, THEN ADDING DATA INTO THE DATABASE
 
@@ -850,14 +1058,18 @@ def input_screen():
                                 OK_clicked = False
                                 break
                         if name_exi == False:
-                            command = "insert into classic_pong_game(Name,Password,High_score,High_score_free) values('"+str(signin_name.text)+"','"+str(signin_pass.text)+"',0,0)"
+                            command = "insert into classic_pong_game(Name,Password,High_score,High_score_free) values('"+str(
+                                signin_name.text)+"','"+str(signin_pass.text)+"',0,0)"
                             mycursor.execute(command)
                             mydb.commit()
                             var_obj.username = signin_name.text
-                            var_obj.signed_in = True 
-                            with open('User.bin','wb') as user_file:pickle.dump([signin_name.text],user_file);user_file.close()
+                            var_obj.signed_in = True
+                            with open('User.bin', 'wb') as user_file:
+                                pickle.dump([signin_name.text], user_file)
+                                user_file.close()
                             menu_play_1(signin_name.text)
-                    else:pass_cp_not_match = True
+                    else:
+                        pass_cp_not_match = True
 
                 OK_clicked = False
                 OK_clicked_once = True
@@ -872,115 +1084,151 @@ def input_screen():
                             if str(data[0]) == loginn_name.text:
                                 if str(data[1]) == login_pass.text:
                                     var_obj.signed_in = True
-                                    with open('User.bin','wb') as user_file:pickle.dump((loginn_name.text),user_file);user_file.close()
-                                    var_obj.username = loginn_name.text ; menu_play_1(loginn_name.text) ; break ; OK_clicked_once = False 
-                                else:inv_pass = True;OK_clicked_once = True
-                            else:inv_name = True ; OK_clicked_once = True
-                    else: inv_name = True ; OK_clicked_once = True
-            OK_clicked = False          
-        
+                                    with open('User.bin', 'wb') as user_file:
+                                        pickle.dump(
+                                            (loginn_name.text), user_file)
+                                        user_file.close()
+                                    var_obj.username = loginn_name.text
+                                    menu_play_1(loginn_name.text)
+                                    break
+                                    OK_clicked_once = False
+                                else:
+                                    inv_pass = True
+                                    OK_clicked_once = True
+                            else:
+                                inv_name = True
+                                OK_clicked_once = True
+                    else:
+                        inv_name = True
+                        OK_clicked_once = True
+            OK_clicked = False
+
         if login == True:
             # DRAWING DIFFERENT INPUT BOXES AND SHOWING THE TEXT
 
             show_txt('Username : ', 255, 255, 255, 50, 100, 350)
             show_txt('Password : ', 255, 255, 255, 50, 100, 450)
-            
-            loginn_name.width = show_txt(loginn_name.text, 255, 255, 255, 40, 382.5, 363)
+
+            loginn_name.width = show_txt(
+                loginn_name.text, 255, 255, 255, 40, 382.5, 363)
             pygame.draw.rect(screen, (255, 255, 255),
                              (375, 359, loginn_name.width + 38, 65), 2)
-            login_pass.width = show_txt(login_pass.text if show_pass_login == True else len(login_pass.text)*'*', 255, 255, 255, 40, 367.5, 463)
+            login_pass.width = show_txt(login_pass.text if show_pass_login == True else len(
+                login_pass.text)*'*', 255, 255, 255, 40, 367.5, 463)
             pygame.draw.rect(screen, (255, 255, 255),
                              (360, 459, login_pass.width + 38, 65), 2)
 
-            show_png_img('Images\hide_icon.png' if show_pass_login == True else 'Images\show_pass.png', 430+login_pass.width,475 if show_pass_login == True else 469)
+            show_png_img('Images\hide_icon.png' if show_pass_login == True else 'Images\show_pass.png',
+                         430+login_pass.width, 475 if show_pass_login == True else 469)
 
             if OK_clicked_once == True:
-                if len(loginn_name.text) == 0: # CHACKING LENGTH OF NAME
+                if len(loginn_name.text) == 0:  # CHACKING LENGTH OF NAME
                     show_txt('Enter your name', 255, 40, 40, 40, 350, 260)
                     OK_clicked = False
 
-                elif len(login_pass.text) == 0: # CHECKING LENGTH OF PASSWORD
+                elif len(login_pass.text) == 0:  # CHECKING LENGTH OF PASSWORD
                     show_txt('Enter password', 255, 40, 40, 40, 355, 260)
                     OK_clicked = False
-                if len(loginn_name.text) != 0 and len(login_pass.text)!=0:
-                    if inv_name == True or inv_pass == True: # IF PASSWORD OR NAME IS INCORRECT WHEN LOGING IN, SHOW ERROR 
+                if len(loginn_name.text) != 0 and len(login_pass.text) != 0:
+                    if inv_name == True or inv_pass == True:  # IF PASSWORD OR NAME IS INCORRECT WHEN LOGING IN, SHOW ERROR
                         show_txt('Invalid username or password',
-                                255, 40, 40, 40, 225, 260)
+                                 255, 40, 40, 40, 225, 260)
                     OK_clicked = False
-
 
         elif signup == True:
 
             # DRAWING VARIOUS INPUT BOXES AND SHOWING TEXT
 
-            signin_name.width = show_txt(signin_name.text, 255, 255, 255, 40, 382.5, 363)
+            signin_name.width = show_txt(
+                signin_name.text, 255, 255, 255, 40, 382.5, 363)
             pygame.draw.rect(screen, (255, 255, 255),
                              (375, 359, signin_name.width + 38, 65), 2)
-            signin_pass.width = show_txt(signin_pass.text if show_pass_sign == True else len(signin_pass.text)*'*', 255, 255, 255, 40, 367.5, 463)
+            signin_pass.width = show_txt(signin_pass.text if show_pass_sign == True else len(
+                signin_pass.text)*'*', 255, 255, 255, 40, 367.5, 463)
             pygame.draw.rect(screen, (255, 255, 255),
                              (360, 459, signin_pass.width + 38, 65), 2)
-            signin_conf_pass.width = show_txt(signin_conf_pass.text if show_pass_sign == True else len(signin_conf_pass.text)*'*', 255, 255, 255, 40, 567.5, 563)
+            signin_conf_pass.width = show_txt(signin_conf_pass.text if show_pass_sign == True else len(
+                signin_conf_pass.text)*'*', 255, 255, 255, 40, 567.5, 563)
             pygame.draw.rect(screen, (255, 255, 255),
                              (560, 559, signin_conf_pass.width + 38, 65), 2)
 
-            show_png_img('Images\hide_icon.png' if show_pass_sign == True else 'Images\show_pass.png', 430+signin_pass.width,475 if show_pass_sign == True else 469)
+            show_png_img('Images\hide_icon.png' if show_pass_sign == True else 'Images\show_pass.png',
+                         430+signin_pass.width, 475 if show_pass_sign == True else 469)
 
             show_txt('Username : ', 255, 255, 255, 50, 100, 350)
             show_txt('Password : ', 255, 255, 255, 50, 100, 450)
             show_txt('Confirm password : ', 255, 255, 255, 50, 100, 550)
 
-            if OK_clicked_once == True: # SHOWING ERROR MESSAGE
-                if len(signin_name.text) == 0: #
+            if OK_clicked_once == True:  # SHOWING ERROR MESSAGE
+                if len(signin_name.text) == 0:
                     show_txt('Enter your name', 255, 40, 40, 40, 350, 260)
                     OK_clicked = False
                 elif len(signin_pass.text) == 0:
                     show_txt('Enter password', 255, 40, 40, 40, 355, 260)
                     OK_clicked = False
                 elif len(signin_conf_pass.text) == 0:
-                    show_txt('Confirm your password', 255, 40, 40, 40, 280, 260)
+                    show_txt('Confirm your password',
+                             255, 40, 40, 40, 280, 260)
                     OK_clicked = False
                 elif pass_cp_not_match == True:
                     show_txt('Password and confirm password do not match',
-                            255, 40, 40, 40, 90, 260)
+                             255, 40, 40, 40, 90, 260)
                 OK_clicked = False
 
-                if name_exi == True: # CHECKING IF THE USERNAME ALREADY EXISTS
+                if name_exi == True:  # CHECKING IF THE USERNAME ALREADY EXISTS
                     show_txt('This username already exists',
-                            255, 40, 40, 40, 230, 260)
+                             255, 40, 40, 40, 230, 260)
 
         # DRAWING BUTTONS
-        login_command = Button__(200, 150, 200, 65,light_pink,med_pink,dark_pink,mouse,click,'LOGIN',41).button_blit()
-        sign_up_command = Button__(600, 150, 200, 65,light_cyan,med_cyan,dark_cyan,mouse,click,'SIGN UP',41).button_blit()
-        next_command = Button__(700, 700, 115, 55,light_peach,med_peach,dark_peach,mouse,click,'NEXT',32).button_blit()
+        login_command = Button__(200, 150, 200, 65, light_pink, med_pink,
+                                 dark_pink, mouse, click, 'LOGIN', 41).button_blit()
+        sign_up_command = Button__(600, 150, 200, 65, light_cyan, med_cyan,
+                                   dark_cyan, mouse, click, 'SIGN UP', 41).button_blit()
+        next_command = Button__(700, 700, 115, 55, light_peach, med_peach,
+                                dark_peach, mouse, click, 'NEXT', 32).button_blit()
 
-        if login_command == True and stop-start>1:login = True;signup = False;OK_clicked_once = False ; start = stop
-        elif sign_up_command == True and stop-start>1:signup = True;login = False;OK_clicked_once = False ; start = stop
-        elif next_command == True and click == True and stop-start>1:
-            OK_clicked_once = True ; start = stop
-            if signup == True:OK_clicked, pass_cp_not_match = True, False
-            if login == True:OK_clicked = True
+        if login_command == True and stop-start > 1:
+            login = True
+            signup = False
+            OK_clicked_once = False
+            start = stop
+        elif sign_up_command == True and stop-start > 1:
+            signup = True
+            login = False
+            OK_clicked_once = False
+            start = stop
+        elif next_command == True and click == True and stop-start > 1:
+            OK_clicked_once = True
+            start = stop
+            if signup == True:
+                OK_clicked, pass_cp_not_match = True, False
+            if login == True:
+                OK_clicked = True
 
-
-        # PLACING THE CURSOR        
-        for key,value in cursor_cordinates.items():
-            if key == cursor_placement:show_txt('_',255,255,255,30,value[0]+cursor_placement.width+5,value[1])
+        # PLACING THE CURSOR
+        for key, value in cursor_cordinates.items():
+            if key == cursor_placement:
+                show_txt('_', 255, 255, 255, 30,
+                         value[0]+cursor_placement.width+5, value[1])
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
+            if event.type == pygame.QUIT:
+                sys.exit()
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 cursor_placement = None
 
-                if mouse_over(200, 150, 200, 65, mouse) or mouse_over(600, 150, 200, 65, mouse) or mouse_over(700, 700, 100, 65, mouse):click = True
+                if mouse_over(200, 150, 200, 65, mouse) or mouse_over(600, 150, 200, 65, mouse) or mouse_over(700, 700, 100, 65, mouse):
+                    click = True
 
-                elif mouse_over(925, 725, 50, 50, mouse): # MUTING OR RESUMING MUSIC
+                elif mouse_over(925, 725, 50, 50, mouse):  # MUTING OR RESUMING MUSIC
                     click = True
                     music_rotating_check += 1
-                    if music_rotating_check % 2 == 0: # ROTATION STOPPED
+                    if music_rotating_check % 2 == 0:  # ROTATION STOPPED
                         pygame.mixer.music.pause()
                         disk_rot = False
-                    elif music_rotating_check % 2 != 0: # ROTATION CONTINUED
+                    elif music_rotating_check % 2 != 0:  # ROTATION CONTINUED
                         mixer.music.unpause()
                         disk_rot = True
 
@@ -992,8 +1240,12 @@ def input_screen():
                 if login == True:
 
                     # HIDING OR SHOWING PASSWORD
-                    if mouse_over(420+login_pass.width,475,60,40,mouse) and show_pass_login == True:show_pass_login = False;click = True
-                    elif mouse_over(420+login_pass.width,475,60,40,mouse) and show_pass_login == False:show_pass_login = True;click = True
+                    if mouse_over(420+login_pass.width, 475, 60, 40, mouse) and show_pass_login == True:
+                        show_pass_login = False
+                        click = True
+                    elif mouse_over(420+login_pass.width, 475, 60, 40, mouse) and show_pass_login == False:
+                        show_pass_login = True
+                        click = True
 
                     # SELECTING THE FIELD
                     if mouse_over(375, 369, loginn_name.width+25, 65, mouse):
@@ -1010,8 +1262,12 @@ def input_screen():
                 elif signup == True:
 
                     # HIDING OR SHOWING PASSWORD
-                    if mouse_over(410+signin_pass.width,455,50,40,mouse) and show_pass_sign == True:show_pass_sign = False;click = True
-                    elif mouse_over(410+signin_pass.width,455,50,40,mouse) and show_pass_sign == False: show_pass_sign = True;click = True
+                    if mouse_over(410+signin_pass.width, 455, 50, 40, mouse) and show_pass_sign == True:
+                        show_pass_sign = False
+                        click = True
+                    elif mouse_over(410+signin_pass.width, 455, 50, 40, mouse) and show_pass_sign == False:
+                        show_pass_sign = True
+                        click = True
 
                     # SELECTING THE FIELD
                     if mouse_over(375, 369, signin_name.width+25, 65, mouse):
@@ -1030,7 +1286,7 @@ def input_screen():
                         loginn_name.cursor_present, login_pass.cursor_present, signin_name.cursor_present, signin_pass.cursor_present, signin_conf_pass.cursor_present = False, False, False, False, False
                         cursor_placement = None
 
-                if click == True and click_muted == False: # PLAYING CLICK SSOUND
+                if click == True and click_muted == False:  # PLAYING CLICK SSOUND
                     click_sound = mixer.Sound('Music\Click.wav')
                     click_sound.play()
 
@@ -1038,21 +1294,24 @@ def input_screen():
                 click = False
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE: # PRESSING BACKSPACE
+                if event.key == pygame.K_BACKSPACE:  # PRESSING BACKSPACE
                     OK_clicked_once = False
                     try:
-                        if cursor_placement.cursor_present == True:cursor_placement.text = cursor_placement.text[:-1]
-                    except:pass
-                else: # PRESSING ANY KEY
+                        if cursor_placement.cursor_present == True:
+                            cursor_placement.text = cursor_placement.text[:-1]
+                    except:
+                        pass
+                else:  # PRESSING ANY KEY
                     OK_clicked_once = False
                     try:
                         if cursor_placement == loginn_name or cursor_placement == signin_name:
-                            if cursor_placement.cursor_present == True and len(cursor_placement.text)<20:
+                            if cursor_placement.cursor_present == True and len(cursor_placement.text) < 20:
                                 cursor_placement.text += event.unicode
                         elif cursor_placement == login_pass or cursor_placement == signin_pass or cursor_placement == signin_conf_pass:
-                            if cursor_placement.cursor_present == True and len(cursor_placement.text)<15:
+                            if cursor_placement.cursor_present == True and len(cursor_placement.text) < 15:
                                 cursor_placement.text += event.unicode
-                    except:pass
+                    except:
+                        pass
 
         if disk_rot == False:
             show_png_img('Images\Music_icon.png', 925, 725)
@@ -1064,9 +1323,11 @@ def input_screen():
 
         run_i_s = var_obj.run_i_s
 
-        pygame.display.update() # UPDATING THE SCREEN ON EVERY ITERATION
+        pygame.display.update()  # UPDATING THE SCREEN ON EVERY ITERATION
 
 # CREATING FUNCTION TO GIVE INFO ABOUT THE GAME AND THE DEVELOPER
+
+
 def about():
     global disk_rot
     global click_muted
@@ -1121,21 +1382,22 @@ def about():
             icon_rot(angle_x)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
+            if event.type == pygame.QUIT:
+                sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
-                if mouse_over(925, 725, 50, 50, mouse): # PAUSING OR RESUMING THE FUCNTION
+                if mouse_over(925, 725, 50, 50, mouse):  # PAUSING OR RESUMING THE FUCNTION
                     click = True
                     music_rotating_check += 1
-                    if music_rotating_check % 2 == 0: 
+                    if music_rotating_check % 2 == 0:
                         pygame.mixer.music.pause()
                         disk_rot = False
                     elif music_rotating_check % 2 != 0:
                         mixer.music.unpause()
                         disk_rot = True
 
-                elif mouse_over(30, 720, 50, 50, mouse): # CLICKING BACK BUTTON
+                elif mouse_over(30, 720, 50, 50, mouse):  # CLICKING BACK BUTTON
                     click = True
                     run_about = False
                 if click == True and click_muted == False:
@@ -1144,14 +1406,18 @@ def about():
             if event.type == pygame.MOUSEBUTTONUP:
                 click = False
 
-        pygame.display.update() # UPDATING THE DISPLAY
+        pygame.display.update()  # UPDATING THE DISPLAY
 
 # CREATING THE FUNCTION TO TRANSFORM THE IMAGE
+
+
 def transform_image(img_name, i_x, i_y):
     screen.blit(pygame.transform.scale(pygame.image.load(
         img_name).convert(), (125, 100)), (i_x, i_y))
 
 # CREATING FUNCTION TO CHECK IF ANY BOX IS CLICKED IN THE SETTING. iF CLICKED RETRUNING ITS CORDINATES AND COLORS
+
+
 def return_color_block_x_y(x, y, mouse):
     #global color_clicked
     color_clicked = False
@@ -1271,6 +1537,8 @@ def return_color_block_x_y(x, y, mouse):
         return x, y, color_clicked
 
 # CREATING FUNCTION TO RETURN THE IMAGE CORDINATES
+
+
 def return_image_cord(mouse):
 
     if 45 < mouse[1] < 435:
@@ -1298,7 +1566,9 @@ def return_image_cord(mouse):
     if var_obj.image_clicked == True:
         return ix, iy, bg_image
 
-# CREATING FUNCTION TO SHORTEN THE IMAGES BY TRANSFORMING THEM 
+# CREATING FUNCTION TO SHORTEN THE IMAGES BY TRANSFORMING THEM
+
+
 def customize_bg_images(x, y):
     transform_image('Images\digital.png', x, y)
     transform_image('Images\greenland.png', x+200, y)
@@ -1307,6 +1577,8 @@ def customize_bg_images(x, y):
     transform_image('Images\space.png', x+200, y+130)
 
 # CREATING FUNCTION TO DISPLAY THE COLOURED BOXES ON THE SCREEN
+
+
 def customize_color(x, y):
 
     pygame.draw.rect(screen, black, (x, y, 30, 30))
@@ -1333,6 +1605,8 @@ def customize_color(x, y):
     pygame.draw.rect(screen, (255, 145, 77), (x+280, y+120, 30, 30))
 
 # CREATING FUNCTION TO CHANGE THE SETTINGS OF THE GAME
+
+
 def settings():
 
     global click_muted, music_muted, disk_rot
@@ -1350,19 +1624,23 @@ def settings():
 
     while run_settings:
 
-        mouse = pygame.mouse.get_pos() # GETTING THE MOUSE CORDINATES
+        mouse = pygame.mouse.get_pos()  # GETTING THE MOUSE CORDINATES
 
-        bg_img('Images\stars.png', 0, 0) # BG IMAGE
+        bg_img('Images\stars.png', 0, 0)  # BG IMAGE
 
         # DRAWING THE OBJECT ON THE SCREEN
         pygame.draw.rect(screen, (130, 130, 130), (0, 0, 300, 800))
         pygame.draw.rect(screen, grey, (0, 0, 298, 200))
 
-        appearance_command = Button__(0, 200, 298, 100,light_pink,med_pink,dark_pink,mouse,click,'APPEARANCE', 40,0).button_blit()
-        audio_command = Button__(0, 300, 298, 100,light_cyan,med_cyan,dark_cyan,mouse,click,'AUDIO', 40,0).button_blit()
-        help_command = Button__(0, 400, 298, 100,light_mint,med_mint,dark_mint,mouse,click,'HELP',40,0).button_blit()
-        done_command = Button__(30,725,110,50,light_peach,med_peach,dark_peach,mouse,click,'DONE',30,0).button_blit()
-        pygame.draw.rect(screen, black, (30,725,110,50),3)
+        appearance_command = Button__(0, 200, 298, 100, light_pink, med_pink,
+                                      dark_pink, mouse, click, 'APPEARANCE', 40, 0).button_blit()
+        audio_command = Button__(0, 300, 298, 100, light_cyan, med_cyan,
+                                 dark_cyan, mouse, click, 'AUDIO', 40, 0).button_blit()
+        help_command = Button__(0, 400, 298, 100, light_mint, med_mint,
+                                dark_mint, mouse, click, 'HELP', 40, 0).button_blit()
+        done_command = Button__(30, 725, 110, 50, light_peach, med_peach,
+                                dark_peach, mouse, click, 'DONE', 30, 0).button_blit()
+        pygame.draw.rect(screen, black, (30, 725, 110, 50), 3)
 
         pygame.draw.line(screen, white, (300, 0), (300, 800), 5)
         pygame.draw.line(screen, black, (0, 200), (297, 200), 6)
@@ -1373,14 +1651,20 @@ def settings():
         # SHOWIG THE TEXT ON  THE SCREEN
         show_txt('Settings', 255, 255, 255, 50, 45, 60)
 
-        if appearance_command == True:app_selected, audio_selected, help_selected = True, False, False
-        elif audio_command == True:app_selected, audio_selected, help_selected = False, True, False
-        elif help_command == True:app_selected, audio_selected, help_selected = False, False, True
-        elif done_command == True:click = True ; run_settings = False
+        if appearance_command == True:
+            app_selected, audio_selected, help_selected = True, False, False
+        elif audio_command == True:
+            app_selected, audio_selected, help_selected = False, True, False
+        elif help_command == True:
+            app_selected, audio_selected, help_selected = False, False, True
+        elif done_command == True:
+            click = True
+            run_settings = False
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
+            if event.type == pygame.QUIT:
+                sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -1389,7 +1673,7 @@ def settings():
                 if mouse_over(925, 725, 50, 50, mouse):
                     click = True
                     music_rotating_check += 1
-                    if music_rotating_check % 2 == 0: # PLAYING/PAUSING THE MUSIC
+                    if music_rotating_check % 2 == 0:  # PLAYING/PAUSING THE MUSIC
                         pygame.mixer.music.pause()
                         disk_rot = False
                         music_muted = True
@@ -1398,9 +1682,10 @@ def settings():
                         disk_rot = True
                         music_muted = False
 
-                elif mouse_over(30,725,110,50, mouse) or mouse_over(0, 200, 300, 100, mouse) or mouse_over(0, 300, 300, 100, mouse) or mouse_over(0, 400, 300, 100, mouse):click = True
+                elif mouse_over(30, 725, 110, 50, mouse) or mouse_over(0, 200, 300, 100, mouse) or mouse_over(0, 300, 300, 100, mouse) or mouse_over(0, 400, 300, 100, mouse):
+                    click = True
 
-                if app_selected == True: # APPEARANCE SELECTED
+                if app_selected == True:  # APPEARANCE SELECTED
 
                     if mouse_over(355, 700, 380, 30, mouse):
                         customise_bg = True
@@ -1411,35 +1696,39 @@ def settings():
                         customise_bg = False
                         click = True
 
-                    if customise_bg == True: # CUSTOMIZING THE BG
+                    if customise_bg == True:  # CUSTOMIZING THE BG
 
-                        if 50 < mouse[1] < 435: # SELECTING THE IMAGE
-                            
+                        if 50 < mouse[1] < 435:  # SELECTING THE IMAGE
+
                             var_obj.selecting_bg_img = True
                             var_obj.selecting_bg_color = False
-                            if mouse_over(400,140,125,100,mouse) or mouse_over(600,140,125,100,mouse) or mouse_over(800,140,125,100,mouse) or mouse_over(400,270,125,100,mouse) or mouse_over(600,270,125,100,mouse):
-                                var_obj.img_sel_cord = return_image_cord(mouse) # LIST OF RETURNED VARIABLES
+                            if mouse_over(400, 140, 125, 100, mouse) or mouse_over(600, 140, 125, 100, mouse) or mouse_over(800, 140, 125, 100, mouse) or mouse_over(400, 270, 125, 100, mouse) or mouse_over(600, 270, 125, 100, mouse):
+                                var_obj.img_sel_cord = return_image_cord(
+                                    mouse)  # LIST OF RETURNED VARIABLES
 
                                 if var_obj.image_clicked == True:
-                                    var_obj.image_name = var_obj.img_sel_cord[2] # IMAGE NAME
+                                    # IMAGE NAME
+                                    var_obj.image_name = var_obj.img_sel_cord[2]
                                     click = True
 
-                        elif 400 < mouse[1] < 660: # SELECTING THE BG COLOR
+                        elif 400 < mouse[1] < 660:  # SELECTING THE BG COLOR
 
                             var_obj.selecting_bg_color = True
                             var_obj.selecting_bg_img = False
-                            if mouse_over(490,470,310,150,mouse):
+                            if mouse_over(490, 470, 310, 150, mouse):
                                 var_obj.cor = return_color_block_x_y(
                                     490, 470, mouse)
-                                color_clicked = var_obj.cor[2] # LIST OF RETURNED VARIABLES
+                                # LIST OF RETURNED VARIABLES
+                                color_clicked = var_obj.cor[2]
                                 if color_clicked == True:
                                     click = True
-                                    var_obj.color_bg = var_obj.cor[3] # SETING THE BG COLOR 
-                                    var_obj.color_selected = True # SELECTING / DESELECTING THE COLOR
+                                    # SETING THE BG COLOR
+                                    var_obj.color_bg = var_obj.cor[3]
+                                    var_obj.color_selected = True  # SELECTING / DESELECTING THE COLOR
                                 else:
                                     var_obj.color_selected = False
 
-                    elif customize_tile == True: # CUSTOMIZING THE TILE / BALL
+                    elif customize_tile == True:  # CUSTOMIZING THE TILE / BALL
 
                         if 50 < mouse[1] < 435:
                             tile_selected = True
@@ -1452,15 +1741,17 @@ def settings():
                         else:
                             ball_selected, tile_selected = False, False
 
-                        if tile_selected == True: # CUSOMIZING THE TILE
-                            if mouse_over(440,110,310,150,mouse):
+                        if tile_selected == True:  # CUSOMIZING THE TILE
+                            if mouse_over(440, 110, 310, 150, mouse):
                                 var_obj.cor_tile = return_color_block_x_y(
                                     440, 110, mouse)
-                                var_obj.color_tile_clicked = var_obj.cor_tile[2] # SELECTING / DESELECTING THE COLOR
+                                # SELECTING / DESELECTING THE COLOR
+                                var_obj.color_tile_clicked = var_obj.cor_tile[2]
 
                                 if var_obj.color_tile_clicked == True:
                                     click = True
-                                    var_obj.color_tile = var_obj.cor_tile[3] # CHOSING COLOR OF TILE
+                                    # CHOSING COLOR OF TILE
+                                    var_obj.color_tile = var_obj.cor_tile[3]
                                     var_obj.color_tile_selected = True
                                 else:
                                     var_obj.color_tile_selected = False
@@ -1468,7 +1759,7 @@ def settings():
                             # CHOSING HOLLOW / SOLID TILE
                             if mouse_over(412.5, 285, 142.5, 55, mouse):
                                 click = True
-                                var_obj.selecting_tile_hs = True 
+                                var_obj.selecting_tile_hs = True
                                 var_obj.tile_hollow = False
                             elif mouse_over(612.5, 285, 160, 55, mouse):
                                 click = True
@@ -1476,18 +1767,21 @@ def settings():
                                 var_obj.tile_hollow = True
 
                         elif ball_selected == True:
-                            if mouse_over(440,430,310,150,mouse):
+                            if mouse_over(440, 430, 310, 150, mouse):
                                 var_obj.cor_ball = return_color_block_x_y(
                                     440, 435, mouse)
-                                var_obj.color_ball_clicked = var_obj.cor_ball[2]  # CHECKING IF THE USE IS SELECCTING THE BALL
+                                # CHECKING IF THE USE IS SELECCTING THE BALL
+                                var_obj.color_ball_clicked = var_obj.cor_ball[2]
 
                                 if var_obj.color_ball_clicked == True:
                                     click = True
-                                    var_obj.color_ball = var_obj.cor_ball[3] # CHOOSING THE COLOR OF THE BALL
-                                    var_obj.color_ball_selected = True 
+                                    # CHOOSING THE COLOR OF THE BALL
+                                    var_obj.color_ball = var_obj.cor_ball[3]
+                                    var_obj.color_ball_selected = True
                                 else:
                                     var_obj.color_ball_selected = False
-                            if mouse_over(412.5, 600, 142.5, 55, mouse): # CHOSING HOLLOW/SOLDI BALL
+                            # CHOSING HOLLOW/SOLDI BALL
+                            if mouse_over(412.5, 600, 142.5, 55, mouse):
                                 click = True
                                 var_obj.ball_hollow = False
                                 var_obj.selecting_ball_hs = True
@@ -1496,9 +1790,9 @@ def settings():
                                 var_obj.ball_hollow = True
                                 var_obj.selecting_ball_hs = True
 
-                elif audio_selected == True: # AUDIO TAB SELECTED
+                elif audio_selected == True:  # AUDIO TAB SELECTED
                     # MUTING / UNMUTING THE CLICK SOUND
-                    if mouse_over(670, 295, 245, 50, mouse): 
+                    if mouse_over(670, 295, 245, 50, mouse):
                         click = True
                         click_muted = False
                     elif mouse_over(390, 295, 215, 50, mouse):
@@ -1511,15 +1805,15 @@ def settings():
                         click = True
                         music_muted = False
 
-                if click_muted == False and click == True: # PLAYING THE CLICK SOUND
+                if click_muted == False and click == True:  # PLAYING THE CLICK SOUND
                     click_sound = mixer.Sound('Music\Click.wav')
                     click_sound.play()
 
-            elif event.type == pygame.MOUSEBUTTONUP: # MOUSE BUTOON RELEASED
+            elif event.type == pygame.MOUSEBUTTONUP:  # MOUSE BUTOON RELEASED
                 button_pressed = False
                 click = False
 
-        if app_selected == True: # APPEARANCE TAB SELECTED
+        if app_selected == True:  # APPEARANCE TAB SELECTED
 
             # DRAWING THE ONJECTS ONT HE SCRENN
             pygame.draw.rect(screen, light_red, (0, 203, 297, 100), 5)
@@ -1533,7 +1827,7 @@ def settings():
             show_txt('Customize Objects',
                      white[0], white[0], white[0], 30, 400, 740)
 
-            if customise_bg == True: # CUSTOMIZING THE BG
+            if customise_bg == True:  # CUSTOMIZING THE BG
                 pygame.draw.circle(screen, black, (370, 722), 6)
                 pygame.draw.circle(screen, white, (370, 80), 13)
                 pygame.draw.circle(screen, white, (370, 430), 13)
@@ -1542,30 +1836,33 @@ def settings():
                 show_txt('Choose background color',
                          255, 255, 255, 40, 400, 400)
 
-                customize_bg_images(400, 140) # DRAWING THE IMAGES TO BE SELECTED
-                customize_color(490, 470) # DRAWING THE COLOURED TILES
+                # DRAWING THE IMAGES TO BE SELECTED
+                customize_bg_images(400, 140)
+                customize_color(490, 470)  # DRAWING THE COLOURED TILES
 
-                if var_obj.selecting_bg_img == True: # SELECTING THE BG IMAGE
+                if var_obj.selecting_bg_img == True:  # SELECTING THE BG IMAGE
                     pygame.draw.circle(screen, black, (370, 80), 9)
                     if var_obj.image_clicked == True:
                         pygame.draw.rect(
                             screen, light_red, (var_obj.img_sel_cord[0], var_obj.img_sel_cord[1], 125, 100), 5)
 
-                elif var_obj.selecting_bg_color == True: # SELECYTING THE BG COLOR
+                elif var_obj.selecting_bg_color == True:  # SELECYTING THE BG COLOR
                     pygame.draw.circle(screen, black, (370, 430), 9)
                     if var_obj.color_selected == True:
                         pygame.draw.rect(screen, (255, 0, 0),
                                          (var_obj.cor[0], var_obj.cor[1], 30, 30), 5)
 
-            elif customize_tile == True: # CUSTOMIZING BALL / TILE 
+            elif customize_tile == True:  # CUSTOMIZING BALL / TILE
 
                 # DRAWING THE OBJECTS ON THE SCREEN
                 pygame.draw.circle(screen, white, (370, 60), 13)
                 pygame.draw.circle(screen, white, (370, 385), 13)
                 pygame.draw.circle(screen, black, (370, 762), 6)
 
-                customize_color(440, 110) # DRAWING THE COLOURED TILES FOR THE TILES
-                customize_color(440, 435) # DRAWING THE COLOURED TILES FOR THE BALL
+                # DRAWING THE COLOURED TILES FOR THE TILES
+                customize_color(440, 110)
+                # DRAWING THE COLOURED TILES FOR THE BALL
+                customize_color(440, 435)
 
                 show_txt('Customize tile', 255, 255, 255, 40, 400, 30)
                 show_txt('Customize ball', 255, 255, 255, 40, 400, 355)
@@ -1596,13 +1893,14 @@ def settings():
                 # DRAWING THE MODEL OF THE TILE
                 if var_obj.tile_hollow == True:
                     pygame.draw.rect(screen, var_obj.color_tile,
-                                      (850, 150, 20, 80), 5)
+                                     (850, 150, 20, 80), 5)
                     pygame.draw.rect(screen, light_red,
-                                      (612.5, 285, 160, 55), 3)
+                                     (612.5, 285, 160, 55), 3)
                 else:
-                    pygame.draw.rect(screen, var_obj.color_tile, (850, 150, 20, 80))
+                    pygame.draw.rect(
+                        screen, var_obj.color_tile, (850, 150, 20, 80))
                     pygame.draw.rect(screen, light_red,
-                                    (412.5, 285, 142.5, 55), 3)
+                                     (412.5, 285, 142.5, 55), 3)
 
                 # DRAWING THE MODEL OF THE BALL
                 if var_obj.ball_hollow == True:
@@ -1616,7 +1914,7 @@ def settings():
                     pygame.draw.rect(screen, light_red,
                                      (412.5, 600, 142.5, 55), 3)
 
-        elif audio_selected == True: # AUDIO TAB SELECTED
+        elif audio_selected == True:  # AUDIO TAB SELECTED
 
             # DRAWING THE OBJECTS ON THE SCREEN
             pygame.draw.rect(screen, light_red, (0, 303, 297, 100), 5)
@@ -1640,19 +1938,21 @@ def settings():
             show_txt('Unmute backgound music',
                      white[0], white[0], white[0], 25, 400, 530)
 
-            # DRAWING THE VOLUME SLIDER 
+            # DRAWING THE VOLUME SLIDER
             pygame.draw.line(screen, (0, 0, 0), (400, 150), (800, 150), 5)
             pygame.draw.line(screen, pygame.Color(
                 'darkturquoise'), (400, 150), (vol_x, 150), 5)
             pygame.draw.circle(screen, (255, 255, 255), (vol_x, 150), 10)
 
-            volume_level = 1 - ((800 - vol_x) / 400) # SETTING UP THE VOLUME
+            volume_level = 1 - ((800 - vol_x) / 400)  # SETTING UP THE VOLUME
             pygame.mixer.music.set_volume(volume_level)
 
-            show_txt(str(int(volume_level * 100)), 255, 255, 255, 40, 830, 120) # SHOWING THE VOLUME LEVEL
+            show_txt(str(int(volume_level * 100)), 255, 255, 255,
+                     40, 830, 120)  # SHOWING THE VOLUME LEVEL
 
-            if button_pressed == True: # CHANGING THE VOLUME LEVEL
-                if 400 < mouse[0] < 804 and 130 < mouse[1] < 170:vol_x = mouse[0]
+            if button_pressed == True:  # CHANGING THE VOLUME LEVEL
+                if 400 < mouse[0] < 804 and 130 < mouse[1] < 170:
+                    vol_x = mouse[0]
 
             # MUTING / UNMUTING THE CLICK
             if click_muted == True:
@@ -1663,14 +1963,14 @@ def settings():
                 pygame.mixer.music.unpause()
 
             # MUTING / UNMUTING THE MUSIC
-            if music_muted == True :
+            if music_muted == True:
                 pygame.draw.rect(screen, light_red, (390, 460, 295, 50), 3)
                 disk_rot = False
-            elif music_muted == False :
+            elif music_muted == False:
                 pygame.draw.rect(screen, light_red, (390, 525, 310, 50), 3)
                 disk_rot = True
 
-        elif help_selected == True: # SELECTING THE HELP TAB
+        elif help_selected == True:  # SELECTING THE HELP TAB
             pygame.draw.rect(screen, light_red, (0, 403, 297, 100), 5)
             pygame.draw.circle(screen, white, (370, 100), 13)
             pygame.draw.circle(screen, white, (370, 180), 8)
@@ -1738,71 +2038,112 @@ def settings():
             pygame.draw.line(screen, white, (515, 700), (565, 700), 3)
             show_txt('Move tile down', 255, 255, 255, 20, 575, 683)
 
-
-        if disk_rot == False: # rotation stopped
+        if disk_rot == False:  # rotation stopped
             music_muted = True
             show_png_img('Images\Music_icon.png', 925, 725)
             pygame.draw.line(screen, light_red, (925, 725), (975, 775), 5)
             pygame.mixer.music.pause()
 
-        elif disk_rot == True: # ROTATION RESUMED
+        elif disk_rot == True:  # ROTATION RESUMED
             music_muted = False
             angle_x -= 2
             icon_rot(angle_x)
             pygame.mixer.music.unpause()
 
-        pygame.time.Clock().tick(100) # SETTING UP THE FPS
-        pygame.display.update() # UPDATING THE SCREEN
+        pygame.time.Clock().tick(100)  # SETTING UP THE FPS
+        pygame.display.update()  # UPDATING THE SCREEN
 
 # CREATING FUNCTION TO PLAY AGAINST THE COMPUTER
+
+
 def ai(speed, username):
-    global run_ai,p_s,high_score_ai_free
+    global run_ai, p_s, high_score_ai_free
 
     # variables
     lst = var_obj.return_var()  # GETTING BG AND OBJECT COLOR
-    none_selected_bg = lst[7];none_selected_tile = lst[8];none_selected_ball = lst[9]
-    selecting_bg_img = lst[10];color_selected_bg = lst[11]
-    hollow_tile = lst[13];hollow_ball = lst[15]
-    tile_hs = lst[14];ball_hs = lst[16];image_clicked = lst[12]
-    if none_selected_bg == True:color_of_bg = lst[0]
-    else:color_of_bg = lst[5];img_name = lst[6]
-    if none_selected_tile == True:color_of_tile = lst[1]
-    else:color_of_tile = lst[4]
-    if none_selected_ball == True:color_of_ball = lst[2]
-    else:color_of_ball = lst[3]
+    none_selected_bg = lst[7]
+    none_selected_tile = lst[8]
+    none_selected_ball = lst[9]
+    selecting_bg_img = lst[10]
+    color_selected_bg = lst[11]
+    hollow_tile = lst[13]
+    hollow_ball = lst[15]
+    tile_hs = lst[14]
+    ball_hs = lst[16]
+    image_clicked = lst[12]
+    if none_selected_bg == True:
+        color_of_bg = lst[0]
+    else:
+        color_of_bg = lst[5]
+        img_name = lst[6]
+    if none_selected_tile == True:
+        color_of_tile = lst[1]
+    else:
+        color_of_tile = lst[4]
+    if none_selected_ball == True:
+        color_of_ball = lst[2]
+    else:
+        color_of_ball = lst[3]
 
-    c = False;start = True;lst = [['d', 'u'], ['r', 'l']];score_increase = False
+    c = False
+    start = True
+    lst = [['d', 'u'], ['r', 'l']]
+    score_increase = False
 
     speed_var = speed
-    if speed_var == 8:speed_var_x = 13
-    elif speed_var == 10:speed_var_x = 15
-    elif speed_var == 12:speed_var_x = 20
+    if speed_var == 8:
+        speed_var_x = 13
+    elif speed_var == 10:
+        speed_var_x = 15
+    elif speed_var == 12:
+        speed_var_x = 20
 
     # PLAYING THE MUSIC
-    mixer.music.load('Music\Play music.mp3');mixer.music.play(-1)
-    if disk_rot == False:pygame.mixer.music.pause()  # IF DISK_ROT = FALSE PAUSING THE MUSIC
+    mixer.music.load('Music\Play music.mp3')
+    mixer.music.play(-1)
+    if disk_rot == False:
+        pygame.mixer.music.pause()  # IF DISK_ROT = FALSE PAUSING THE MUSIC
 
     # Creating player
-    p_x = 960;p_y = 360;p_w = 20;p_h = 80;p_y_change = 0
+    p_x = 960
+    p_y = 360
+    p_w = 20
+    p_h = 80
+    p_y_change = 0
 
     # Second player (computer)
-    c_x = 40;c_y = 360;c_w = 20;c_h = 80;c_y_change = 5
+    c_x = 40
+    c_y = 360
+    c_w = 20
+    c_h = 80
+    c_y_change = 5
 
     # creating ball:
-    b_x = 500;b_y = 400;b_y_change = speed;b_x_change = speed
+    b_x = 500
+    b_y = 400
+    b_y_change = speed
+    b_x_change = speed
 
     # scores
-    p_s = 0;lives = 5;c_lives = 5
+    p_s = 0
+    lives = 5
+    c_lives = 5
     clock = pygame.time.Clock()
 
-    run_ai = True;var_obj.run_ai = True
-    timer = [1, 2, 3];p_s_x = 600;c_s_x = 100
-    start_time = time.time() ; click = False
+    run_ai = True
+    var_obj.run_ai = True
+    timer = [1, 2, 3]
+    p_s_x = 600
+    c_s_x = 100
+    start_time = time.time()
+    click = False
 
     # FETCHING THE DATA FROM THE DATABASE
     mycursor.execute('select * from classic_pong_game')
     for data in mycursor:
-        if data[0] == username:high_score_ai = data[2];high_score_ai_free = data[3]
+        if data[0] == username:
+            high_score_ai = data[2]
+            high_score_ai_free = data[3]
 
     while run_ai == True:
 
@@ -1811,29 +2152,41 @@ def ai(speed, username):
             screen.fill(color_of_bg)  # BACKGROUND COLOR FILL
             clock.tick(60)
             speed = speed_var
-            if b_y_change < 0:b_y_change = -speed_var
-            if b_y_change > 0:b_y_change = speed_var
-            if b_x_change < 0:b_x_change = -speed_var
-            if b_x_change > 0:b_x_change = speed_var
+            if b_y_change < 0:
+                b_y_change = -speed_var
+            if b_y_change > 0:
+                b_y_change = speed_var
+            if b_x_change < 0:
+                b_x_change = -speed_var
+            if b_x_change > 0:
+                b_x_change = speed_var
         elif selecting_bg_img == True and image_clicked == True:
-            bg_img(img_name,0,0)
+            bg_img(img_name, 0, 0)
 
             # IF BG IMAGE IS SELECTING, I'M INCERASING THE SPEED TO NEUTRALIZE THE LAG DUE TO RENDERING OF BG IMAGE
             speed = speed_var_x
             clock.tick(100)
-            if b_y_change < 0:b_y_change = -speed
-            if b_y_change > 0:b_y_change = speed
-            if b_x_change < 0:b_x_change = -speed
-            if b_x_change > 0:b_x_change = speed
+            if b_y_change < 0:
+                b_y_change = -speed
+            if b_y_change > 0:
+                b_y_change = speed
+            if b_x_change < 0:
+                b_x_change = -speed
+            if b_x_change > 0:
+                b_x_change = speed
 
         else:
             screen.fill(color_of_bg)
             clock.tick(60)
             speed = speed_var
-            if b_y_change < 0:b_y_change = -speed_var
-            if b_y_change > 0:b_y_change = speed_var
-            if b_x_change < 0:b_x_change = -speed_var
-            if b_x_change > 0:b_x_change = speed_var
+            if b_y_change < 0:
+                b_y_change = -speed_var
+            if b_y_change > 0:
+                b_y_change = speed_var
+            if b_x_change < 0:
+                b_x_change = -speed_var
+            if b_x_change > 0:
+                b_x_change = speed_var
 
         c_y_change = speed
 
@@ -1841,37 +2194,57 @@ def ai(speed, username):
             # ANALIZING THE CHANGE IF ANY
 
             lst = var_obj.return_var()
-            none_selected_bg = lst[7];none_selected_tile = lst[8];none_selected_ball = lst[9]
-            selecting_bg_img = lst[10];color_selected_bg = lst[11]
-            hollow_tile = lst[13];hollow_ball = lst[15]
-            tile_hs = lst[14];ball_hs = lst[16];image_clicked = lst[12]
-            if none_selected_bg == True:color_of_bg = lst[0]
-            else:color_of_bg = lst[5];img_name = lst[6]
-            if none_selected_tile == True:color_of_tile = lst[1]
-            else:color_of_tile = lst[4]
-            if none_selected_ball == True:color_of_ball = lst[2]
-            else:color_of_ball = lst[3]
+            none_selected_bg = lst[7]
+            none_selected_tile = lst[8]
+            none_selected_ball = lst[9]
+            selecting_bg_img = lst[10]
+            color_selected_bg = lst[11]
+            hollow_tile = lst[13]
+            hollow_ball = lst[15]
+            tile_hs = lst[14]
+            ball_hs = lst[16]
+            image_clicked = lst[12]
+            if none_selected_bg == True:
+                color_of_bg = lst[0]
+            else:
+                color_of_bg = lst[5]
+                img_name = lst[6]
+            if none_selected_tile == True:
+                color_of_tile = lst[1]
+            else:
+                color_of_tile = lst[4]
+            if none_selected_ball == True:
+                color_of_ball = lst[2]
+            else:
+                color_of_ball = lst[3]
 
-            speed = 0;sec = timer[index]
+            speed = 0
+            sec = timer[index]
 
             show_txt(str(sec), 255, 255, 255, 200, 450, 400)
             # SETTING TIMER SPEED BY PAUSING THE SCREEN FOR EVERY 1 SEC
             time.sleep(1)
             index -= 1  # IF INDEX IS -1 THE TIMER WILL NOT SHOW NUMBER '1' ON THE SCREEN
-            if index == -2:game_obj.update(False)
+            if index == -2:
+                game_obj.update(False)
 
-        elif game_obj.get_res() == False:index = 2
+        elif game_obj.get_res() == False:
+            index = 2
 
         show_png_img('Images\pause_button.png', 50, 50)
 
         # DRAWING THE OBJECT ON THE SCREEN
         if hollow_tile == False and tile_hs == True:
-            player_tile = pygame.draw.rect(screen, color_of_tile, (p_x, p_y, p_w, p_h))
-            comp_tile = pygame.draw.rect(screen, color_of_tile, (c_x, c_y, c_w, c_h))
+            player_tile = pygame.draw.rect(
+                screen, color_of_tile, (p_x, p_y, p_w, p_h))
+            comp_tile = pygame.draw.rect(
+                screen, color_of_tile, (c_x, c_y, c_w, c_h))
         else:
-            player_tile = pygame.draw.rect(screen, color_of_tile, (p_x, p_y, p_w, p_h), 5)
-            comp_tile = pygame.draw.rect(screen, color_of_tile, (c_x, c_y, c_w, c_h), 5)
-        if hollow_ball == False :
+            player_tile = pygame.draw.rect(
+                screen, color_of_tile, (p_x, p_y, p_w, p_h), 5)
+            comp_tile = pygame.draw.rect(
+                screen, color_of_tile, (c_x, c_y, c_w, c_h), 5)
+        if hollow_ball == False:
             pygame.draw.circle(screen, color_of_ball, (b_x, b_y), 10)
         else:
             pygame.draw.circle(screen, color_of_ball, (b_x, b_y), 10, 3)
@@ -1882,226 +2255,356 @@ def ai(speed, username):
 
         # IF BALL TOUCHES ANY END, CHOSING THE DIRECTION
         if start == True:
-            choice_vert = random.choice(lst[0]);choice_hori = random.choice(lst[1])
+            choice_vert = random.choice(lst[0])
+            choice_hori = random.choice(lst[1])
             c = True
             # CHOSING RANDOM DIRECTIONS
-            if choice_vert == 'u':b_y_change = -speed
-            elif choice_vert == 'd':b_y_change = speed
-            if choice_hori == 'l':b_x_change = -speed
-            elif choice_hori == 'r':b_x_change = speed
+            if choice_vert == 'u':
+                b_y_change = -speed
+            elif choice_vert == 'd':
+                b_y_change = speed
+            if choice_hori == 'l':
+                b_x_change = -speed
+            elif choice_hori == 'r':
+                b_x_change = speed
 
-            b_x += b_x_change ; b_y += b_y_change # BALL MOVEMENT
-            
+            b_x += b_x_change
+            b_y += b_y_change  # BALL MOVEMENT
 
-            if score_increase == True:time.sleep(1);score_increase = False
+            if score_increase == True:
+                time.sleep(1)
+                score_increase = False
             start = False
-            if lives != 0 and free_ai == False: time.sleep(1) # PAUSING THE SCREEN
+            if lives != 0 and free_ai == False:
+                time.sleep(1)  # PAUSING THE SCREEN
 
         elif start == False:
-            b_x += b_x_change;b_y += b_y_change
+            b_x += b_x_change
+            b_y += b_y_change
             # CHANGING THE SCORE
             if b_x >= 988:
                 score_increase = True
-                if free_ai == False:lives -= 1
-                else:p_s -= 20
+                if free_ai == False:
+                    lives -= 1
+                else:
+                    p_s -= 20
             elif b_x <= 12:
                 score_increase = True
-                if free_ai == False:c_lives -= 1
-                else:p_s += 50
+                if free_ai == False:
+                    c_lives -= 1
+                else:
+                    p_s += 50
             if free_ai == False:
                 if lives == 0 or c_lives == 0:
-                    run_ai = False;time.sleep(1)
-                    win_lose_screen(c_lives,lives)
+                    run_ai = False
+                    time.sleep(1)
+                    win_lose_screen(c_lives, lives)
 
         # DISPLAYING THER TEXT ON THE SCREEN
         if free_ai == True:
             show_txt("Highest score : " + str(high_score_ai_free),
                      255, 255, 255, 40, 150, 10)
             show_txt("Score : " + str(p_s), 255, 255, 255, 40, 150, 60)
-            start_time = time_counter(start_time,700,70,40) # SHOWING THE TIME PLAYED
-            end = Button__(740,25,100,45,(200,200,200),(170,170,170),(80,80,80),mouse,click,'END',30,15).button_blit()
+            # SHOWING THE TIME PLAYED
+            start_time = time_counter(start_time, 700, 70, 40)
+            end = Button__(740, 25, 100, 45, (200, 200, 200), (170, 170, 170),
+                           (80, 80, 80), mouse, click, 'END', 30, 15).button_blit()
             if end == True:
-                var_obj.run_ai = False ; run_ai = False ; var_obj.run_menu_play_1 = True ; var_obj.run_mul_name = False ; var_obj.run_ai = False ; var_obj.run_mul = False 
+                var_obj.run_ai = False
+                run_ai = False
+                var_obj.run_menu_play_1 = True
+                var_obj.run_mul_name = False
+                var_obj.run_ai = False
+                var_obj.run_mul = False
                 try:
                     if p_s > high_score_ai_free:
                         high_score_ai_free = p_s
                         query = """update classic_pong_game set High_score_free =? where Name = ?"""
-                        value = (high_score_ai_free,username)
-                        mycursor.execute(query,value);mydb.commit()
-                except:pass
-            end = False 
+                        value = (high_score_ai_free, username)
+                        mycursor.execute(query, value)
+                        mydb.commit()
+                except:
+                    pass
+            end = False
         else:
-            p_width = show_txt(username,255,255,255,40,p_s_x,20)
+            p_width = show_txt(username, 255, 255, 255, 40, p_s_x, 20)
             p_s_x = 745-(p_width/2)
-            p_width = show_txt('Computer',255,255,255,40,c_s_x,20)
+            p_width = show_txt('Computer', 255, 255, 255, 40, c_s_x, 20)
             c_s_x = 350-(p_width/2)
 
-            for life in range(lives):show_png_img('Images\heart.png', 620+(55*life), 90)  # DISPLAYING THE LIFE
-            for life in range(c_lives): show_png_img('Images\heart.png', 220+(55*life), 90) # DISPLAYING THE LIFE
-                
+            for life in range(lives):
+                show_png_img('Images\heart.png', 620+(55*life),
+                             90)  # DISPLAYING THE LIFE
+            for life in range(c_lives):
+                show_png_img('Images\heart.png', 220+(55*life),
+                             90)  # DISPLAYING THE LIFE
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
+            if event.type == pygame.QUIT:
+                sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_over(50, 50, 50, 50, mouse):  # PAUSE BUTTON
                     pause(username)
                 click = True
-            elif event.type == pygame.MOUSEBUTTONUP:click = False
+            elif event.type == pygame.MOUSEBUTTONUP:
+                click = False
 
             # PRESSING THE KEY
             if event.type == pygame.KEYDOWN:
                 # IF BUTTON IS PRESSED A SPECIFIC VALUE IS ADDED OR SUBTEACTED FROM MOVEMENT SPEED TO MOVE THE TILE
                 if event.key == pygame.K_UP:
-                    if p_y >= 160:p_y_change -= speed
+                    if p_y >= 160:
+                        p_y_change -= speed
                 elif event.key == pygame.K_DOWN:
-                    if p_y <= 710:p_y_change += speed
-                elif event.key == pygame.K_ESCAPE:pause(username)
+                    if p_y <= 710:
+                        p_y_change += speed
+                elif event.key == pygame.K_ESCAPE:
+                    pause(username)
 
-            if event.type == pygame.KEYUP:p_y_change = 0
+            if event.type == pygame.KEYUP:
+                p_y_change = 0
 
         # PLAYER MOVEMENT
         p_y += p_y_change
-        if p_y <= 160:p_y_change = 0
-        elif p_y >= 710:p_y_change = 0
+        if p_y <= 160:
+            p_y_change = 0
+        elif p_y >= 710:
+            p_y_change = 0
 
         # AI MOVEMENT
         if c == True:  # MOVING THE COMPUTER TILE ACCORDING TO THE CORDINATED OF THE BALL
-            if b_y <= 160:c_y_change = 0
-            if b_y >= 710:c_y_change = 0
+            if b_y <= 160:
+                c_y_change = 0
+            if b_y >= 710:
+                c_y_change = 0
 
-            if b_y < c_y and b_y_change << 0:c_y -= c_y_change
-            elif b_y <= c_x and b_y_change >> 0:c_y += c_y_change
-            elif b_y >= c_x and b_y_change >> 0:c_y += c_y_change
-            elif b_y >= c_x and b_y_change << 0:c_y -= c_y_change
+            if b_y < c_y and b_y_change << 0:
+                c_y -= c_y_change
+            elif b_y <= c_x and b_y_change >> 0:
+                c_y += c_y_change
+            elif b_y >= c_x and b_y_change >> 0:
+                c_y += c_y_change
+            elif b_y >= c_x and b_y_change << 0:
+                c_y -= c_y_change
 
         if b_x >= 988:  # IF BALL PASSES THE PLAYER'S TILE, IT REAPPEARS AT THE CENTER
-            b_x = 500;b_y = 400;start = True
+            b_x = 500
+            b_y = 400
+            start = True
         elif b_x <= 12:  # IF BALL PASSES THE COMPUTER'S TILE, IT REAPPEARS AT THE CENTER
-            c = False;b_x = 500;b_y = 400;start = True
+            c = False
+            b_x = 500
+            b_y = 400
+            start = True
 
         # IF BALL GOES BEYOND THE SPECIFIED Y-CORDINATE, IT REVERSES ITS DIRECTIONON Y AXIS
-        if b_y >= 780 or b_y <= 160:b_y_change = -b_y_change
+        if b_y >= 780 or b_y <= 160:
+            b_y_change = -b_y_change
 
         # BALL COLLIDING WITH THE TILES
-        if player_tile.collidepoint(b_x,b_y) :
-            b_x_change = -b_x_change;c = True 
-            if disk_rot == True:mixer.Sound('Music\Collide.wav').play()
-        elif comp_tile.collidepoint(b_x,b_y) :
-            b_x_change = -b_x_change;c = False
-            if disk_rot == True:mixer.Sound('Music\Collide.wav').play()
+        if player_tile.collidepoint(b_x, b_y):
+            b_x_change = -b_x_change
+            c = True
+            if disk_rot == True:
+                mixer.Sound('Music\Collide.wav').play()
+        elif comp_tile.collidepoint(b_x, b_y):
+            b_x_change = -b_x_change
+            c = False
+            if disk_rot == True:
+                mixer.Sound('Music\Collide.wav').play()
 
         run_ai = var_obj.run_ai
         pygame.display.update()  # UPDATING THE SCREEN
 
 # CREATING FUNCTION FOR HUMAN VS HUMAN
+
+
 def multiplayer(speed, p1_name, p2_name):
     global run_mul, run
 
     # variables
     lst = var_obj.return_var()  # GETTING BG AND OBJECT COLOR
-    none_selected_bg = lst[7];none_selected_tile = lst[8];none_selected_ball = lst[9]
-    selecting_bg_img = lst[10];color_selected_bg = lst[11]
-    hollow_tile = lst[13];hollow_ball = lst[15]
-    tile_hs = lst[14];ball_hs = lst[16];image_clicked = lst[12]
-    if none_selected_bg == True:color_of_bg = lst[0]
-    else:color_of_bg = lst[5];img_name = lst[6]
-    if none_selected_tile == True:color_of_tile = lst[1]
-    else:color_of_tile = lst[4]
-    if none_selected_ball == True:color_of_ball = lst[2]
-    else:color_of_ball = lst[3]
+    none_selected_bg = lst[7]
+    none_selected_tile = lst[8]
+    none_selected_ball = lst[9]
+    selecting_bg_img = lst[10]
+    color_selected_bg = lst[11]
+    hollow_tile = lst[13]
+    hollow_ball = lst[15]
+    tile_hs = lst[14]
+    ball_hs = lst[16]
+    image_clicked = lst[12]
+    if none_selected_bg == True:
+        color_of_bg = lst[0]
+    else:
+        color_of_bg = lst[5]
+        img_name = lst[6]
+    if none_selected_tile == True:
+        color_of_tile = lst[1]
+    else:
+        color_of_tile = lst[4]
+    if none_selected_ball == True:
+        color_of_ball = lst[2]
+    else:
+        color_of_ball = lst[3]
 
     speed_var = speed
-    if speed_var == 8:speed_var_x = 13
-    elif speed_var == 10:speed_var_x = 15
-    elif speed_var == 12:speed_var_x = 20
+    if speed_var == 8:
+        speed_var_x = 13
+    elif speed_var == 10:
+        speed_var_x = 15
+    elif speed_var == 12:
+        speed_var_x = 20
 
-    start = True;lst = [['d', 'u'], ['r', 'l']];score_increase = True
+    start = True
+    lst = [['d', 'u'], ['r', 'l']]
+    score_increase = True
 
-    mixer.music.load('Music\Play music.mp3');mixer.music.play(-1)
-    if disk_rot == False:pygame.mixer.music.pause()
+    mixer.music.load('Music\Play music.mp3')
+    mixer.music.play(-1)
+    if disk_rot == False:
+        pygame.mixer.music.pause()
 
     # Creating player
-    p1_x = 960;p1_y = 360;p1_w = 20;p1_h = 80;p1_y_change = 0
+    p1_x = 960
+    p1_y = 360
+    p1_w = 20
+    p1_h = 80
+    p1_y_change = 0
 
     # Second player (computer)
-    p2_x = 40;p2_y = 360;p2_w = 20;p2_h = 80;p2_y_change = 0
+    p2_x = 40
+    p2_y = 360
+    p2_w = 20
+    p2_h = 80
+    p2_y_change = 0
 
     # creating ball:
-    b_x = 490;b_y = 390;b_x_change = speed;b_y_change = speed
+    b_x = 490
+    b_y = 390
+    b_x_change = speed
+    b_y_change = speed
 
     # scores
-    if free_hum == False:p1_s = 5;p2_s = 5
-    else:p1_s = 0;p2_s = 0
+    if free_hum == False:
+        p1_s = 5
+        p2_s = 5
+    else:
+        p1_s = 0
+        p2_s = 0
 
-    p1_sc_width = 200;p2_sc_width = 600;timer = [1, 2, 3] ; p1_cord = 410 ; p2_cord = 880 ; click = False
-    clock = pygame.time.Clock();var_obj.run_mul = True;run_mul = True;start_time = time.time()
+    p1_sc_width = 200
+    p2_sc_width = 600
+    timer = [1, 2, 3]
+    p1_cord = 410
+    p2_cord = 880
+    click = False
+    clock = pygame.time.Clock()
+    var_obj.run_mul = True
+    run_mul = True
+    start_time = time.time()
 
     while run_mul == True:
 
         # BG FILL
         if color_selected_bg == True:
-            screen.fill(color_of_bg);clock.tick(60);speed = speed_var
-            if b_y_change < 0:b_y_change = -speed_var
-            if b_y_change > 0:b_y_change = speed_var
-            if b_x_change < 0:b_x_change = -speed_var
-            if b_x_change > 0:b_x_change = speed_var
+            screen.fill(color_of_bg)
+            clock.tick(60)
+            speed = speed_var
+            if b_y_change < 0:
+                b_y_change = -speed_var
+            if b_y_change > 0:
+                b_y_change = speed_var
+            if b_x_change < 0:
+                b_x_change = -speed_var
+            if b_x_change > 0:
+                b_x_change = speed_var
         elif selecting_bg_img == True and image_clicked == True:
-            bg_img(img_name,0,0)
+            bg_img(img_name, 0, 0)
             # IF BG IMAGE IS SELECTING, I'M INCERASING THE SPEED TO NEUTRALIZE THE LAG DUE TO RENDERING OF BG IMAGE
-            speed = speed_var_x;clock.tick(100)
-            if b_y_change < 0:b_y_change = -speed
-            if b_y_change > 0:b_y_change = speed
-            if b_x_change < 0:b_x_change = -speed
-            if b_x_change > 0:b_x_change = speed
+            speed = speed_var_x
+            clock.tick(100)
+            if b_y_change < 0:
+                b_y_change = -speed
+            if b_y_change > 0:
+                b_y_change = speed
+            if b_x_change < 0:
+                b_x_change = -speed
+            if b_x_change > 0:
+                b_x_change = speed
 
         else:
-            screen.fill(color_of_bg);speed = speed_var
-            if b_y_change < 0:b_y_change = -speed_var
-            if b_y_change > 0:b_y_change = speed_var
-            if b_x_change < 0:b_x_change = -speed_var
-            if b_x_change > 0:b_x_change = speed_var
+            screen.fill(color_of_bg)
+            speed = speed_var
+            if b_y_change < 0:
+                b_y_change = -speed_var
+            if b_y_change > 0:
+                b_y_change = speed_var
+            if b_x_change < 0:
+                b_x_change = -speed_var
+            if b_x_change > 0:
+                b_x_change = speed_var
             clock.tick(60)
 
         mouse = pygame.mouse.get_pos()  # GETTING MOUSE CORDINATE
-
 
         if game_obj.get_res() == True:  # RESUME TIMER
             # ANALIZING THE CHANGE IF ANY
 
             lst = var_obj.return_var()
-            none_selected_bg = lst[7];none_selected_tile = lst[8];none_selected_ball = lst[9]
-            selecting_bg_img = lst[10];color_selected_bg = lst[11]
-            hollow_tile = lst[13];hollow_ball = lst[15]
-            tile_hs = lst[14];ball_hs = lst[16];image_clicked = lst[12]
-            if none_selected_bg == True:color_of_bg = lst[0]
-            else:color_of_bg = lst[5];img_name = lst[6]
-            if none_selected_tile == True:color_of_tile = lst[1]
-            else:color_of_tile = lst[4]
-            if none_selected_ball == True:color_of_ball = lst[2]
-            else:color_of_ball = lst[3]
+            none_selected_bg = lst[7]
+            none_selected_tile = lst[8]
+            none_selected_ball = lst[9]
+            selecting_bg_img = lst[10]
+            color_selected_bg = lst[11]
+            hollow_tile = lst[13]
+            hollow_ball = lst[15]
+            tile_hs = lst[14]
+            ball_hs = lst[16]
+            image_clicked = lst[12]
+            if none_selected_bg == True:
+                color_of_bg = lst[0]
+            else:
+                color_of_bg = lst[5]
+                img_name = lst[6]
+            if none_selected_tile == True:
+                color_of_tile = lst[1]
+            else:
+                color_of_tile = lst[4]
+            if none_selected_ball == True:
+                color_of_ball = lst[2]
+            else:
+                color_of_ball = lst[3]
 
-            speed = 0;sec = timer[index]
+            speed = 0
+            sec = timer[index]
             show_txt(str(sec), 255, 255, 255, 200, 450, 400)
             # SETTING TIMER SPEED BY PAUSING THE SCREEN FOR EVERY 1 SEC
             time.sleep(1)
             index -= 1  # IF INDEX IS -1 THE TIMER WILL NOT SHOW NUMBER '1' ON THE SCREEN
 
-            if index == -2:game_obj.update(False)
+            if index == -2:
+                game_obj.update(False)
 
-        elif game_obj.get_res() == False:index = 2
+        elif game_obj.get_res() == False:
+            index = 2
 
         show_png_img('Images\pause_button.png', 50, 50)
 
         # DRAWING THE OBJECT ON THE SCREEN
         if hollow_tile == False and tile_hs == True:
-            p1_tile = pygame.draw.rect(screen, color_of_tile, (p1_x, p1_y, p1_w, p1_h))
-            p2_tile = pygame.draw.rect(screen, color_of_tile, (p2_x, p2_y, p2_w, p2_h))
+            p1_tile = pygame.draw.rect(
+                screen, color_of_tile, (p1_x, p1_y, p1_w, p1_h))
+            p2_tile = pygame.draw.rect(
+                screen, color_of_tile, (p2_x, p2_y, p2_w, p2_h))
         else:
-            p1_tile = pygame.draw.rect(screen, color_of_tile,(p1_x, p1_y, p1_w, p1_h), 5)
-            p2_tile = pygame.draw.rect(screen, color_of_tile,(p2_x, p2_y, p2_w, p2_h), 5)
-        if hollow_ball == False :
+            p1_tile = pygame.draw.rect(
+                screen, color_of_tile, (p1_x, p1_y, p1_w, p1_h), 5)
+            p2_tile = pygame.draw.rect(
+                screen, color_of_tile, (p2_x, p2_y, p2_w, p2_h), 5)
+        if hollow_ball == False:
             pygame.draw.circle(screen, color_of_ball, (b_x, b_y), 10)
         else:
             pygame.draw.circle(screen, color_of_ball, (b_x, b_y), 10, 3)
@@ -2111,43 +2614,59 @@ def multiplayer(speed, p1_name, p2_name):
         if free_hum == False:
             if p1_s == 0 or p2_s == 0:  # BREAKING THE FUNCTION
                 run_mul = False
-                win_lose_screen(p1_s,p2_s,p1_name,p2_name)
+                win_lose_screen(p1_s, p2_s, p1_name, p2_name)
                 time.sleep(1)
-                
+
         # IF BALL TOUCHES ANY END, CHOSING THE DIRECTION
         if start == True:
             # CHOOSING RANDOM DIRECTION WHEN BALL HITS ANY EXTREME ENDS ON X-AXIS
-            choice_vert = random.choice(lst[0]);choice_hori = random.choice(lst[1])
-            if choice_vert == 'u':b_y_change = -speed
-            elif choice_vert == 'd':b_y_change == speed
-            if choice_hori == 'l':b_x_change = -speed
-            elif choice_hori == 'r':b_x_change = speed
-            b_x += b_x_change;b_y += b_y_change
+            choice_vert = random.choice(lst[0])
+            choice_hori = random.choice(lst[1])
+            if choice_vert == 'u':
+                b_y_change = -speed
+            elif choice_vert == 'd':
+                b_y_change == speed
+            if choice_hori == 'l':
+                b_x_change = -speed
+            elif choice_hori == 'r':
+                b_x_change = speed
+            b_x += b_x_change
+            b_y += b_y_change
             score_increase = True
             start = False
             time.sleep(1)  # PAUSING THE SCREEN
 
         elif start == False:
-            b_x += b_x_change;b_y += b_y_change  # BALL MOVEMENT IN X AND Y DIRECTION
-            
+            b_x += b_x_change
+            b_y += b_y_change  # BALL MOVEMENT IN X AND Y DIRECTION
+
             if score_increase == True:  # CHANGING THE SCORE
                 if b_x >= 988:  # CHECKING IF THE SCORE HAS TO BE CHANGED
-                    if free_hum == False:p2_s -= 1  # IF FREE_HUM = FALSE, DECREASE THE LIFE
-                    else:p1_s += 20  # ELSE INCREASE THE SCORE
+                    if free_hum == False:
+                        p2_s -= 1  # IF FREE_HUM = FALSE, DECREASE THE LIFE
+                    else:
+                        p1_s += 20  # ELSE INCREASE THE SCORE
                     score_increase = False
                 elif b_x <= 12:  # CHECKING IF THE SCORE HAS TO BE CHANGED
-                    if free_hum == False:p1_s -= 1
-                    else:p2_s += 20
+                    if free_hum == False:
+                        p1_s -= 1
+                    else:
+                        p2_s += 20
                     score_increase = False
 
-        p1_width = show_txt(p1_name, 255, 255, 255, 40 if len(p1_name) < 14 else 30, p1_cord, 20)
-        p2_width = show_txt(p2_name, 255, 255, 255, 40 if len(p2_name) < 14 else 30, p2_cord, 20)
-        p1_cord = 300 - (p1_width/2) ; p2_cord = 830 - (p2_width/2)
+        p1_width = show_txt(p1_name, 255, 255, 255, 40 if len(
+            p1_name) < 14 else 30, p1_cord, 20)
+        p2_width = show_txt(p2_name, 255, 255, 255, 40 if len(
+            p2_name) < 14 else 30, p2_cord, 20)
+        p1_cord = 300 - (p1_width/2)
+        p2_cord = 830 - (p2_width/2)
 
         if free_hum == False:
             # DISPLAYING THE LIFE REAMINING
-            for life_1 in range(p1_s):show_png_img('Images\heart.png', 180+(50*life_1), 90)
-            for life_2 in range(p2_s):show_png_img('Images\heart.png', 710+(50*life_2), 90)
+            for life_1 in range(p1_s):
+                show_png_img('Images\heart.png', 180+(50*life_1), 90)
+            for life_2 in range(p2_s):
+                show_png_img('Images\heart.png', 710+(50*life_2), 90)
 
         else:
             # DSIPLAYING THE SCROE
@@ -2159,56 +2678,83 @@ def multiplayer(speed, p1_name, p2_name):
             p2_sc_width = 830 - (p2_s_width/2)
 
             # END BUTTON
-            end = Button__(520,25,100,45,(200,200,200),(170,170,170),(80,80,80),mouse,click,'END',30,15).button_blit()
+            end = Button__(520, 25, 100, 45, (200, 200, 200), (170, 170, 170),
+                           (80, 80, 80), mouse, click, 'END', 30, 15).button_blit()
             if end == True:
-                var_obj.run_mul = False ; run_mul = False
-                win_lose_screen(p1_s,p2_s,p1_name,p2_name)
-            end = False ; start_time = time_counter(start_time,490,85,37) # SHOWING THE TIME PLAYED
+                var_obj.run_mul = False
+                run_mul = False
+                win_lose_screen(p1_s, p2_s, p1_name, p2_name)
+            end = False
+            # SHOWING THE TIME PLAYED
+            start_time = time_counter(start_time, 490, 85, 37)
 
         # EVENT LOOP
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:sys.exit()
+            if event.type == pygame.QUIT:
+                sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if mouse_over(50, 50, 50, 50, mouse): pause('s') # CLICKING PAUSE BUTTON
+                if mouse_over(50, 50, 50, 50, mouse):
+                    pause('s')  # CLICKING PAUSE BUTTON
                 click = True
-            elif event.type == pygame.MOUSEBUTTONUP:click = False
+            elif event.type == pygame.MOUSEBUTTONUP:
+                click = False
             # PRESSING THE KEY
             if event.type == pygame.KEYDOWN:
                 # IF BUTTON IS PRESSED A SPECIFIC VALUE IS ADDED OR SUBTEACTED FROM MOVEMENT SPEED TO MOVE THE TILE
                 if event.key == pygame.K_UP:  # MOVING P_1 ON Y-CORDINATE
-                    if p1_y >= 170:p1_y_change -= speed
+                    if p1_y >= 170:
+                        p1_y_change -= speed
                 elif event.key == pygame.K_DOWN:
-                    if p1_y <= 710:p1_y_change += speed
+                    if p1_y <= 710:
+                        p1_y_change += speed
                 elif event.key == pygame.K_w:  # MOVING P_2 ON Y-CORDINATE
-                    if p2_y >= 170:p2_y_change -= speed
+                    if p2_y >= 170:
+                        p2_y_change -= speed
                 elif event.key == pygame.K_s:
-                    if p2_y <= 710:p2_y_change += speed
-                elif event.key == pygame.K_ESCAPE:pause(var_obj.username)
+                    if p2_y <= 710:
+                        p2_y_change += speed
+                elif event.key == pygame.K_ESCAPE:
+                    pause(var_obj.username)
 
             if event.type == pygame.KEYUP:  # RELEASING THE KEY
-                p1_y_change = 0;p2_y_change = 0
+                p1_y_change = 0
+                p2_y_change = 0
 
         # player movement
-        p1_y += p1_y_change ; p2_y += p2_y_change # MOVING THE TILE
-        if p1_y <= 170 or p1_y >= 710:p1_y_change = 0
-        if p2_y <= 170 or p2_y >= 710:p2_y_change = 0
+        p1_y += p1_y_change
+        p2_y += p2_y_change  # MOVING THE TILE
+        if p1_y <= 170 or p1_y >= 710:
+            p1_y_change = 0
+        if p2_y <= 170 or p2_y >= 710:
+            p2_y_change = 0
 
         # Ball movement
-        if b_x >= 988:b_x = 500;b_y = 400;start = True
-        elif b_x <= 12:b_x = 500;b_y = 400;start = True
+        if b_x >= 988:
+            b_x = 500
+            b_y = 400
+            start = True
+        elif b_x <= 12:
+            b_x = 500
+            b_y = 400
+            start = True
 
-        if b_y >= 770 or b_y <= 170:b_y_change = -b_y_change  # REVERSING BALL'S DIRECTION ON Y-AXIS
+        if b_y >= 770 or b_y <= 170:
+            b_y_change = -b_y_change  # REVERSING BALL'S DIRECTION ON Y-AXIS
 
         # CHEKING WHETHER THE BALL HAS COLLIDED WITH THE TILE
-        if p1_tile.collidepoint(b_x,b_y) or p2_tile.collidepoint(b_x,b_y) :
-            b_x_change = -b_x_change;c = True 
-            if disk_rot == True:mixer.Sound('Music\Collide.wav').play()
+        if p1_tile.collidepoint(b_x, b_y) or p2_tile.collidepoint(b_x, b_y):
+            b_x_change = -b_x_change
+            c = True
+            if disk_rot == True:
+                mixer.Sound('Music\Collide.wav').play()
 
         run_mul = var_obj.run_mul
         pygame.display.update()  # UPDATING THE SCREEN
 
 # CREATING THE MENU
+
+
 def menu():
 
     global run
@@ -2220,20 +2766,27 @@ def menu():
     font_y, font_vel = 600, 15
     play_y, settings_y, about_y, quit_y = 800, 890, 980, 1070
     r, g, b = 0, 0, 0
-    b_img_x = -150 ;t_img_x = 1050
+    b_img_x = -150
+    t_img_x = 1050
     pong_reached = False
     click = False
-    disk_rot = True ; click_muted = False
+    disk_rot = True
+    click_muted = False
 
     mixer.music.load('Music\Menu music.mp3')
     mixer.music.play(-1)
-    if disk_rot == False : mixer.music.pause() 
+    if disk_rot == False:
+        mixer.music.pause()
 
     import os
     try:
         if os.path.getsize('User.bin') > 0:
-            with open('User.bin','rb') as file:var_obj.username = pickle.load(file)[0] ; file.close() ; var_obj.signed_in = True
-    except:pass
+            with open('User.bin', 'rb') as file:
+                var_obj.username = pickle.load(file)[0]
+                file.close()
+                var_obj.signed_in = True
+    except:
+        pass
 
     music_rotating_check = 1
     quit_confirmation = False
@@ -2241,105 +2794,154 @@ def menu():
     final_b_img_x, final_play_y, final_settings_y, final_about_y, final_quit_y = 0, 0, 0, 0, 0
     angle_x = 0
     click_muted = False
-    start = time.time() ; start_o = time.time()
-    ball_choice = 'Images\Objects\Ball1.png' ; tile_choice = 'Images\Objects\Tile11.png'
-    ball_lst = ['Images\Objects\Ball1.png','Images\Objects\Ball2.png', 'Images\Objects\Ball3.png', 'Images\Objects\Ball4.png']
-    tile_lst = ['Images\Objects\Tile11.png','Images\Objects\Tile12.png','Images\Objects\Tile21.png','Images\Objects\Tile22.png','Images\Objects\Tile31.png','Images\Objects\Tile32.png','Images\Objects\Tile41.png','Images\Objects\Tile42.png']
+    start = time.time()
+    start_o = time.time()
+    ball_choice = 'Images\Objects\Ball1.png'
+    tile_choice = 'Images\Objects\Tile11.png'
+    ball_lst = ['Images\Objects\Ball1.png', 'Images\Objects\Ball2.png',
+                'Images\Objects\Ball3.png', 'Images\Objects\Ball4.png']
+    tile_lst = ['Images\Objects\Tile11.png', 'Images\Objects\Tile12.png', 'Images\Objects\Tile21.png', 'Images\Objects\Tile22.png',
+                'Images\Objects\Tile31.png', 'Images\Objects\Tile32.png', 'Images\Objects\Tile41.png', 'Images\Objects\Tile42.png']
     while run:
 
-        mouse = pygame.mouse.get_pos() # GETTING THE MOUSE CORDINATES
-        stop = time.time() ; stop_o = time.time()
-        bg_img('Images\stars.png', 0, 0) # BG IMAGE
+        mouse = pygame.mouse.get_pos()  # GETTING THE MOUSE CORDINATES
+        stop = time.time()
+        stop_o = time.time()
+        bg_img('Images\stars.png', 0, 0)  # BG IMAGE
         if stop_o-start_o > 2:
             ball_choice = random.choice(ball_lst)
             tile_choice = random.choice(tile_lst)
             start_o = stop_o
 
-        show_txt('PONG', r, g, b, 150, 300, font_y) # SHOWING THE LOGO
+        show_txt('PONG', r, g, b, 150, 300, font_y)  # SHOWING THE LOGO
 
-        if count != 1: # SETTING THE TRANSITION FOR THE BALL IMAGE
+        if count != 1:  # SETTING THE TRANSITION FOR THE BALL IMAGE
             play_y, settings_y, about_y, quit_y = final_play_y, final_settings_y, final_about_y, final_quit_y
             show_png_img(ball_choice, final_b_img_x, 350)
             show_png_img(tile_choice, final_t_img_x, 300)
 
-        if disk_rot == False: # ROTATION STOPPED
+        if disk_rot == False:  # ROTATION STOPPED
             show_png_img('Images\Music_icon.png', 925, 725)
             pygame.draw.line(screen, light_red, (925, 725), (975, 775), 5)
-        elif disk_rot == True: # ROTATION CONTINUED
+        elif disk_rot == True:  # ROTATION CONTINUED
             angle_x -= 2
             icon_rot(angle_x)
 
         # SHOWING THE OBJECTS
-        play_command = Button__(360,play_y,280,50,light_pink,med_pink,dark_pink,mouse,click,'PLAY',50).button_blit(quit_confirmation)
-        setting_command = Button__(360,settings_y,280,50,light_cyan,med_cyan,dark_cyan,mouse,click,'SETTINGS',50).button_blit(quit_confirmation)
-        about_command = Button__(360,about_y,280,50,light_sand,med_sand,dark_sand,mouse,click,'ABOUT',50).button_blit(quit_confirmation)
-        quit_command = Button__(360,quit_y,280,50,light_peach,med_peach,dark_peach,mouse,click,'QUIT',50).button_blit(quit_confirmation)
+        play_command = Button__(360, play_y, 280, 50, light_pink, med_pink,
+                                dark_pink, mouse, click, 'PLAY', 50).button_blit(quit_confirmation)
+        setting_command = Button__(360, settings_y, 280, 50, light_cyan, med_cyan,
+                                   dark_cyan, mouse, click, 'SETTINGS', 50).button_blit(quit_confirmation)
+        about_command = Button__(360, about_y, 280, 50, light_sand, med_sand,
+                                 dark_sand, mouse, click, 'ABOUT', 50).button_blit(quit_confirmation)
+        quit_command = Button__(360, quit_y, 280, 50, light_peach, med_peach,
+                                dark_peach, mouse, click, 'QUIT', 50).button_blit(quit_confirmation)
 
-        if quit_confirmation == False and stop-start>2 and click == True:
+        if quit_confirmation == False and stop-start > 2 and click == True:
             if play_command == True:
-                if var_obj.signed_in == False:input_screen() # IF THE PLAYER HAS ALREADY SIGNED IN THEN SKIPPING THE LOGIN SCREEN
-                else:menu_play_1(var_obj.username) 
-            elif setting_command == True:settings()
-            elif about_command == True:about()
-            elif quit_command == True:quit_confirmation = True
-            click = False;start = stop
+                if var_obj.signed_in == False:
+                    input_screen()  # IF THE PLAYER HAS ALREADY SIGNED IN THEN SKIPPING THE LOGIN SCREEN
+                else:
+                    menu_play_1(var_obj.username)
+            elif setting_command == True:
+                settings()
+            elif about_command == True:
+                about()
+            elif quit_command == True:
+                quit_confirmation = True
+            click = False
+            start = stop
 
         # EVENT LOOP
         for event in pygame.event.get():
-            
-            if event.type == pygame.QUIT:sys.exit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN: # PRESSING THE MOUSE BUTTON
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:  # PRESSING THE MOUSE BUTTON
                 # click = True
                 if mouse_over(925, 725, 50, 50, mouse):
-                    music_rotating_check += 1 ; click = True
-                    if music_rotating_check % 2 == 0:pygame.mixer.music.pause();disk_rot = False # MUSIC PAUSED
-                    elif music_rotating_check % 2 != 0:mixer.music.unpause();disk_rot = True # MUSIC PLAYED
-                        
-                elif mouse_over(360, play_y, 280, 50, mouse) or mouse_over(360, settings_y, 280, 50, mouse) or mouse_over(360, about_y, 280, 50, mouse) or mouse_over(360, quit_y, 280, 50, mouse):click = True
+                    music_rotating_check += 1
+                    click = True
+                    if music_rotating_check % 2 == 0:
+                        pygame.mixer.music.pause()
+                        disk_rot = False  # MUSIC PAUSED
+                    elif music_rotating_check % 2 != 0:
+                        mixer.music.unpause()
+                        disk_rot = True  # MUSIC PLAYED
 
-                if click == True and click_muted == False: mixer.Sound('Music\Click.wav').play()# PLAYING THE CLICK SOUND
+                elif mouse_over(360, play_y, 280, 50, mouse) or mouse_over(360, settings_y, 280, 50, mouse) or mouse_over(360, about_y, 280, 50, mouse) or mouse_over(360, quit_y, 280, 50, mouse):
+                    click = True
 
-            if event.type == pygame.MOUSEBUTTONUP:click = False
+                if click == True and click_muted == False:
+                    # PLAYING THE CLICK SOUND
+                    mixer.Sound('Music\Click.wav').play()
 
-        if quit_confirmation == True: # CONFIRMING IF THE PLAYER WANT TO QUIT THE GAME
+            if event.type == pygame.MOUSEBUTTONUP:
+                click = False
+
+        if quit_confirmation == True:  # CONFIRMING IF THE PLAYER WANT TO QUIT THE GAME
             mouse = pygame.mouse.get_pos()
             pygame.draw.rect(screen, (50, 50, 50), (300, 300, 400, 200))
             pygame.draw.rect(screen, (255, 255, 255), (300, 300, 400, 200), 5)
             show_txt('Do you want to quit?', 230, 230, 230, 37, 330, 320)
-            quit_yes = Button__(370,410,100,50,light_pink,med_pink,dark_pink,mouse,click,'YES',40).button_blit()
-            quit_no = Button__(520,410,100,50,light_cyan,med_cyan,dark_cyan,mouse,click,'NO',40).button_blit()
-            if quit_yes == True:sys.exit()
-            elif quit_no == True:quit_confirmation = False
+            quit_yes = Button__(370, 410, 100, 50, light_pink, med_pink,
+                                dark_pink, mouse, click, 'YES', 40).button_blit()
+            quit_no = Button__(520, 410, 100, 50, light_cyan, med_cyan,
+                               dark_cyan, mouse, click, 'NO', 40).button_blit()
+            if quit_yes == True:
+                sys.exit()
+            elif quit_no == True:
+                quit_confirmation = False
 
-        if (r, g, b) <= (220, 220, 220):# FADING IN THE PONG TEXT
-                if r <= 255:r += 3
-                if g <= 255:g += 3
-                if b <= 255:b += 3
+        if (r, g, b) <= (220, 220, 220):  # FADING IN THE PONG TEXT
+            if r <= 255:
+                r += 3
+            if g <= 255:
+                g += 3
+            if b <= 255:
+                b += 3
 
         if count == 1:
             # RISING PONG
             if font_y >= 50:
                 font_y -= font_vel
-                if font_y <= 70:pong_reached = True
+                if font_y <= 70:
+                    pong_reached = True
 
             # TRANSITION FOR THE BALL IMAGE
             if pong_reached == True:
-                screen.blit(pygame.image.load(ball_choice).convert_alpha(), (b_img_x, 350)) 
-                if b_img_x <= 60:b_img_x += 10;final_b_img_x = b_img_x
-                screen.blit(pygame.image.load(tile_choice).convert_alpha(), (t_img_x, 300)) 
-                if t_img_x >= 600:t_img_x -= 10;final_t_img_x = t_img_x
+                screen.blit(pygame.image.load(
+                    ball_choice).convert_alpha(), (b_img_x, 350))
+                if b_img_x <= 60:
+                    b_img_x += 10
+                    final_b_img_x = b_img_x
+                screen.blit(pygame.image.load(
+                    tile_choice).convert_alpha(), (t_img_x, 300))
+                if t_img_x >= 600:
+                    t_img_x -= 10
+                    final_t_img_x = t_img_x
 
             # RISING THE BUTTONS
             if pong_reached == True:
-                if play_y >= 330:play_y -= 15;final_play_y = play_y
-                if settings_y >= 420:settings_y -= 15;final_settings_y = settings_y
-                if about_y >= 510:about_y -= 15;final_about_y = about_y
-                if quit_y >= 600:quit_y -= 15;final_quit_y = quit_y
-                else:count += 1
+                if play_y >= 330:
+                    play_y -= 15
+                    final_play_y = play_y
+                if settings_y >= 420:
+                    settings_y -= 15
+                    final_settings_y = settings_y
+                if about_y >= 510:
+                    about_y -= 15
+                    final_about_y = about_y
+                if quit_y >= 600:
+                    quit_y -= 15
+                    final_quit_y = quit_y
+                else:
+                    count += 1
 
         run = var_obj.run
 
         pygame.display.update()
+
 
 menu()
