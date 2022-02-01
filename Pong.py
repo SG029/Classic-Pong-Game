@@ -238,6 +238,22 @@ def icon_rot(angle_x):
     screen.blit(img, (950 - int(img.get_width() / 2),
                 750 - int(img.get_height() / 2)))
 
+# CREATING A TIME COUNTER
+def time_counter(start,x,y,size):
+    global time_var
+    stop = time.time()
+    if stop-start > 1 : # INCREASING THE TIME
+        time_var[5]+=1 ; start = stop
+        if time_var[5]>9:time_var[5] = 0 ; time_var[4] += 1
+        if time_var[4]>5:time_var[5] = 0 ; time_var[4] = 0 ; time_var[3]+=1
+        if time_var[3]>9:time_var[2]+=1 ; time_var[3] = 0
+        if time_var[2]>5:time_var[2]=0 ; time_var[3]=0 ; time_var[1]+=1
+        if time_var[1]>9:time_var[0]+=1 ; time_var[1] = 0
+    def show_time(): # SHOWINF THE TIME
+        time_str = str(time_var[0]) + str(time_var[1]) + ":" + str(time_var[2]) + str(time_var[3]) + ":" + str(time_var[4]) + str(time_var[5]) 
+        show_txt(time_str , 255,255,255,size,x,y)
+    show_time() ; return start
+
 # CREATING FUNCTION TO GET THE NAMES OF 2 PLAYERS WHEN MULTIPLAYER MODE IS BEING PLAYED
 def mul_name(speed):
     global disk_rot
@@ -517,7 +533,7 @@ def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
                 show_txt('You lose!!',255,255,255,70,349.5,50)
                 show_txt('Try again...',255,255,255,60,348.5,150)
 
-        elif hum == True: # DECLARING THE WINNER
+        elif hum == True or free_hum == True: # DECLARING THE WINNER
             show_txt('Congratulations', 255,255,255,80,210.5,40)
             if l1 < l2:
                 txt_w = show_txt(p2_name+' won!!',255,255,255,60,txt_x,150)
@@ -652,7 +668,7 @@ def menu_play_1(user_name):
     global click_muted
     global speed_level
     global a_i, hum, free_ai, free_hum
-    global disk_rot
+    global disk_rot , time_var
 
     # VARIABLES
     vs_x = 350
@@ -763,6 +779,8 @@ def menu_play_1(user_name):
             show_png_img('Images\Music_icon.png', 925, 725) ; pygame.draw.line(screen, light_red, (925, 725), (975, 775), 5)
         elif disk_rot == True: # MUSIC RESUME
             angle_x -= 2 ; icon_rot(angle_x)
+
+        time_var = [0,0,0,0,0,0]
 
         run_menu_play_1 = var_obj.run_menu_play_1 
         pygame.display.update() # UPDATING THE SCREEN
@@ -1779,6 +1797,7 @@ def ai(speed, username):
 
     run_ai = True;var_obj.run_ai = True
     timer = [1, 2, 3];p_s_x = 600;c_s_x = 100
+    start_time = time.time() ; click = False
 
     # FETCHING THE DATA FROM THE DATABASE
     mycursor.execute('select * from classic_pong_game')
@@ -1893,20 +1912,23 @@ def ai(speed, username):
                 if lives == 0 or c_lives == 0:
                     run_ai = False;time.sleep(1)
                     win_lose_screen(c_lives,lives)
-                    
 
         # DISPLAYING THER TEXT ON THE SCREEN
         if free_ai == True:
             show_txt("Highest score : " + str(high_score_ai_free),
                      255, 255, 255, 40, 150, 10)
             show_txt("Score : " + str(p_s), 255, 255, 255, 40, 150, 60)
+            start_time = time_counter(start_time,700,70,40) # SHOWING THE TIME PLAYED
+            end = Button__(740,25,100,45,(200,200,200),(170,170,170),(80,80,80),mouse,click,'END',30,15).button_blit()
+            if end == True:
+                var_obj.run_ai = False ; run_ai = False ; var_obj.run_menu_play_1 = True ; var_obj.run_mul_name = False ; var_obj.run_ai = False ; var_obj.run_mul = False 
+            end = False 
         else:
             p_width = show_txt(username,255,255,255,40,p_s_x,20)
             p_s_x = 745-(p_width/2)
             p_width = show_txt('Computer',255,255,255,40,c_s_x,20)
             c_s_x = 350-(p_width/2)
 
-        if free_ai == False:
             for life in range(lives):show_png_img('Images\heart.png', 620+(55*life), 90)  # DISPLAYING THE LIFE
                 
             for life in range(c_lives): show_png_img('Images\heart.png', 220+(55*life), 90) # DISPLAYING THE LIFE
@@ -1919,6 +1941,8 @@ def ai(speed, username):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_over(50, 50, 50, 50, mouse):  # PAUSE BUTTON
                     pause(username)
+                click = True
+            elif event.type == pygame.MOUSEBUTTONUP:click = False
 
             # PRESSING THE KEY
             if event.type == pygame.KEYDOWN:
@@ -2005,8 +2029,8 @@ def multiplayer(speed, p1_name, p2_name):
     if free_hum == False:p1_s = 5;p2_s = 5
     else:p1_s = 0;p2_s = 0
 
-    p1_sc_width = 200;p2_sc_width = 600;timer = [1, 2, 3]
-    clock = pygame.time.Clock();var_obj.run_mul = True;run_mul = True
+    p1_sc_width = 200;p2_sc_width = 600;timer = [1, 2, 3] ; p1_cord = 410 ; p2_cord = 880 ; click = False
+    clock = pygame.time.Clock();var_obj.run_mul = True;run_mul = True;start_time = time.time()
 
     while run_mul == True:
 
@@ -2033,6 +2057,9 @@ def multiplayer(speed, p1_name, p2_name):
             if b_x_change < 0:b_x_change = -speed_var
             if b_x_change > 0:b_x_change = speed_var
             clock.tick(60)
+
+        mouse = pygame.mouse.get_pos()  # GETTING MOUSE CORDINATE
+
 
         if game_obj.get_res() == True:  # RESUME TIMER
             # ANALIZING THE CHANGE IF ANY
@@ -2107,15 +2134,14 @@ def multiplayer(speed, p1_name, p2_name):
                     else:p2_s += 20
                     score_increase = False
 
-        # score change
-        p1_width = show_txt(p1_name, 255, 255, 255, 40, 200, 20)
-        p2_width = show_txt(p2_name, 255, 255, 255, 40, 600, 20)
+        p1_width = show_txt(p1_name, 255, 255, 255, 40 if len(p1_name) < 14 else 30, p1_cord, 20)
+        p2_width = show_txt(p2_name, 255, 255, 255, 40 if len(p2_name) < 14 else 30, p2_cord, 20)
+        p1_cord = 300 - (p1_width/2) ; p2_cord = 830 - (p2_width/2)
 
         if free_hum == False:
             # DISPLAYING THE LIFE REAMINING
-            for life_1 in range(p1_s):show_png_img('Images\heart.png', 200+(50*life_1), 90)
-
-            for life_2 in range(p2_s):show_png_img('Images\heart.png', 600+(50*life_2), 90)
+            for life_1 in range(p1_s):show_png_img('Images\heart.png', 180+(50*life_1), 90)
+            for life_2 in range(p2_s):show_png_img('Images\heart.png', 710+(50*life_2), 90)
 
         else:
             # DSIPLAYING THE SCROE
@@ -2123,10 +2149,15 @@ def multiplayer(speed, p1_name, p2_name):
                                   255, 40, p1_sc_width, 90)
             p2_s_width = show_txt(str(p2_s), 255, 255,
                                   255, 40, p2_sc_width, 90)
-            p1_sc_width = 200+(p1_width/2)-(p1_s_width/2)
-            p2_sc_width = 600+(p2_width/2)-(p2_s_width/2)
+            p1_sc_width = 300 - (p1_s_width/2)
+            p2_sc_width = 830 - (p2_s_width/2)
 
-        mouse = pygame.mouse.get_pos()  # GETTING MOUSE CORDINATE
+            # END BUTTON
+            end = Button__(520,25,100,45,(200,200,200),(170,170,170),(80,80,80),mouse,click,'END',30,15).button_blit()
+            if end == True:
+                var_obj.run_mul = False ; run_mul = False
+                win_lose_screen(p1_s,p2_s,p1_name,p2_name)
+            end = False ; start_time = time_counter(start_time,490,85,37) # SHOWING THE TIME PLAYED
 
         # EVENT LOOP
         for event in pygame.event.get():
@@ -2134,7 +2165,8 @@ def multiplayer(speed, p1_name, p2_name):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_over(50, 50, 50, 50, mouse): pause('s') # CLICKING PAUSE BUTTON
-
+                click = True
+            elif event.type == pygame.MOUSEBUTTONUP:click = False
             # PRESSING THE KEY
             if event.type == pygame.KEYDOWN:
                 # IF BUTTON IS PRESSED A SPECIFIC VALUE IS ADDED OR SUBTEACTED FROM MOVEMENT SPEED TO MOVE THE TILE
