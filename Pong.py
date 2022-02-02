@@ -1052,7 +1052,7 @@ def input_screen():
                         elif cursor_placement == login_pass or cursor_placement == signin_pass or cursor_placement == signin_conf_pass:
                             if cursor_placement.cursor_present == True and len(cursor_placement.text)<15:
                                 cursor_placement.text += event.unicode
-                    except:pass
+                    except:pass  #*
 
         if disk_rot == False:
             show_png_img('Images\Music_icon.png', 925, 725)
