@@ -95,6 +95,7 @@ def show_txt(text, r, g, b, size, x, y):
     return width
 
 # CREATING CLASS WHICH RESUMES OR PAUSES THE GAME
+
 class Res:
 
     def __init__(self, resume):
@@ -451,7 +452,7 @@ def mul_name(speed):
 
 # CREATING FUNCTION WHICH DECLARES THE WINNER
 def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
-    global disk_rot
+    global disk_rot, high_score_ai_free
     
     mixer.music.load('Music\Menu music.mp3')
     mixer.music.play(-1)
@@ -509,7 +510,7 @@ def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
                         disk_rot = True
 
                 if click == True and click_muted == False: # PLAYING CLICK SOUND IF click_muted = False
-                    mixer.Sound('Music\Click.wav').play() 
+                    mixer.Sound('Music\Click.wav').play()
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 click = False
@@ -526,17 +527,29 @@ def win_lose_screen(l1, l2, p1_name = None, p2_name = None):
             click = False
 
         if a_i == True: # DECLARING THE WINNER
-            if l1 < l2:
+            if l1 < l2 and free_ai == False:
                 show_txt('Congratulations', 255,255,255,80,210.5,40)
                 show_txt('You won!!',255,255,255,70,352.5,150)
-            else:
+            elif l1 > l2 and free_ai == False:
                 show_txt('You lose!!',255,255,255,70,349.5,50)
                 show_txt('Try again...',255,255,255,60,348.5,150)
 
+        elif free_ai == True:
+            if high_score_ai_free<p_s:
+                show_txt('Congrats...you have beaten your highest score',255,255,255,40,80,40)
+                show_txt('Highest score: '+str(l1),255,255,255,40,330,120)
+                show_txt('Your score: '+str(l2),255,255,255,40,350,190)
+            elif high_score_ai_free>p_s :
+                show_txt('Highest score: '+str(l1),255,255,255,50,300,50)
+                show_txt('Your score: '+str(l2),255,255,255,50,320,150)
+
         elif hum == True or free_hum == True: # DECLARING THE WINNER
-            show_txt('Congratulations', 255,255,255,80,210.5,40)
+            show_txt('Congratulations' if l1 > l2 or l2 > l1 else '', 255,255,255,80,210.5,40) 
             if l1 < l2:
                 txt_w = show_txt(p2_name+' won!!',255,255,255,60,txt_x,150)
+                txt_x = 500-(txt_w/2)
+            elif l1 == l2:
+                txt_w = show_txt('Match tied!!',255,255,255,80,txt_x,100)
                 txt_x = 500-(txt_w/2)
             else:
                 txt_w = show_txt(p1_name+' won!!',255,255,255,60,txt_x,150)
@@ -1921,7 +1934,7 @@ def ai(speed, username):
             start_time = time_counter(start_time,700,70,40) # SHOWING THE TIME PLAYED
             end = Button__(740,25,100,45,(200,200,200),(170,170,170),(80,80,80),mouse,click,'END',30,15).button_blit()
             if end == True:
-                var_obj.run_ai = False ; run_ai = False ; var_obj.run_menu_play_1 = True ; var_obj.run_mul_name = False ; var_obj.run_ai = False ; var_obj.run_mul = False 
+                win_lose_screen(high_score_ai_free,p_s)
                 try:
                     if p_s > high_score_ai_free:
                         high_score_ai_free = p_s
